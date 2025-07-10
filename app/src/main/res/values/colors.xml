@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+<!--    <color name="colorPrimary">#fdb285</color>-->
+    <color name="colorPrimary">#0464BF</color>
+    <color name="colorPrimaryVariant">#f0b883</color>
+    <color name="colorOnPrimary">#fff</color>
+    <color name="gray_line_ddd">#DDDDDD</color>
+    <color name="gray_999">#999999</color>
+    <color name="gray_333">#333333</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="cyan_50">#E0F7FA</color>
+    <color name="cyan_100">#B2EBF2</color>
+    <color name="cyan300">#11C8B5</color>
+    <color name="cyan_primary">#0EA5E9</color>
+    <color name="text_color_dark">#1F2937</color>
+    <color name="background_primary">#F8FAFC</color>
+    <color name="progress_track_color">#E0F2F1</color>
+    <color name="progress_fill_color">#11C8B5</color>
+    <color name="button_background_tint">#03C8B9</color>
+
+
+</resources>

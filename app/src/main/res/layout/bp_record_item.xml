@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tv_standard_sys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="120"
+            android:textColor="@color/teal_200"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_systolic"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_standard_dias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="80"
+            android:textColor="@color/teal_200"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_standard_sys"
+            app:layout_constraintStart_toStartOf="@+id/tv_standard_sys"
+            app:layout_constraintTop_toBottomOf="@+id/tv_standard_sys" />
+
+        <TextView
+            android:id="@+id/tv_systolic"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="110"
+            app:layout_constraintEnd_toStartOf="@+id/tv_error_sys"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_standard_sys"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_diastolic"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="78"
+            app:layout_constraintEnd_toEndOf="@+id/tv_systolic"
+            app:layout_constraintStart_toStartOf="@+id/tv_systolic"
+            app:layout_constraintTop_toBottomOf="@+id/tv_systolic" />
+
+        <TextView
+            android:id="@+id/tv_standard_hr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="80"
+            android:textColor="@color/teal_200"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_standard_dias"
+            app:layout_constraintStart_toStartOf="@+id/tv_standard_dias"
+            app:layout_constraintTop_toBottomOf="@+id/tv_standard_dias" />
+
+        <TextView
+            android:id="@+id/tv_hr"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="80"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_diastolic"
+            app:layout_constraintStart_toStartOf="@+id/tv_diastolic"
+            app:layout_constraintTop_toBottomOf="@+id/tv_diastolic" />
+
+        <TextView
+            android:id="@+id/tv_error_sys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="5%"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sample_rate"
+            app:layout_constraintStart_toEndOf="@+id/tv_systolic"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_error_dias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="5%"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_error_sys"
+            app:layout_constraintStart_toStartOf="@+id/tv_error_sys"
+            app:layout_constraintTop_toBottomOf="@+id/tv_error_sys" />
+
+        <TextView
+            android:id="@+id/tv_error_hr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="5%"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_error_dias"
+            app:layout_constraintStart_toStartOf="@+id/tv_error_dias"
+            app:layout_constraintTop_toBottomOf="@+id/tv_error_dias" />
+
+        <TextView
+            android:id="@+id/tv_add_max"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="29926"
+            app:layout_constraintBottom_toTopOf="@+id/tv_record_time"
+            app:layout_constraintStart_toStartOf="@+id/tv_sample_rate"
+            app:layout_constraintTop_toBottomOf="@+id/tv_sample_time" />
+
+        <TextView
+            android:id="@+id/tv_de_min"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2054"
+            app:layout_constraintBottom_toTopOf="@+id/tv_record_time"
+            app:layout_constraintStart_toStartOf="@+id/tv_sample_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_sample_time" />
+
+        <TextView
+            android:id="@+id/tv_sample_rate"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="180"
+            app:layout_constraintEnd_toStartOf="@+id/tv_data_size"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_data_size"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="8700"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sample_time"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_record_time"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="2021-3-31-14:59"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_add_max" />
+
+        <TextView
+            android:id="@+id/tv_sample_time"
+            style="@style/common_text_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="48713ms"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

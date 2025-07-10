@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D6F3F1"
+    android:padding="16dp">
+
+    <!--
+    // In your res/values/colors.xml, you would define these colors:
+    <resources>
+        <color name="cyan_primary">#0EA5E9</color>
+        <color name="text_color_dark">#1F2937</color>
+        <color name="background_primary">#F8FAFC</color>
+        <color name="button_background_tint">#03C8B9</color>
+        <color name="white">#FFFFFF</color>
+    </resources>
+    -->
+
+    <!-- Start Measure Button (circular, bottom center) -->
+    <GridLayout
+        android:layout_marginTop="110dp"
+        android:id="@+id/dataGrid"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="16dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:columnOrderPreserved="false"
+        android:padding="8dp"
+        android:rowCount="2"
+        app:layout_constraintBottom_toTopOf="@+id/bt_measure_bt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <!-- Body Temperature Card - Grid Item 1,1 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardBodyTemperature"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="#00BCD4"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/body_temperature"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_bt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-bold"
+                    android:gravity="center"
+                    android:text="-- ℃"
+                    android:textColor="@color/cyan_primary"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Object Temperature Card - Grid Item 1,2 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardObjectTemperature"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="#00BCD4"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/bold"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-bold"
+                    android:gravity="center"
+                    android:text="-- ℃"
+                    android:textColor="@color/cyan_primary"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Environment Temperature Card - Grid Item 2,1 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardEnvironmentTemperature"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="#00BCD4"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/environment"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_environment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-bold"
+                    android:gravity="center"
+                    android:text="-- ℃"
+                    android:textColor="@color/cyan_primary"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Voltage Card - Grid Item 2,2 -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardVoltage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="#00BCD4"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/voltage"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_voltage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-bold"
+                    android:gravity="center"
+                    android:text="-- mV"
+                    android:textColor="@color/cyan_primary"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </GridLayout>
+
+    <!-- Circular BT Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bt_measure_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/start_measure"
+        app:backgroundTint="@color/button_background_tint"
+
+        app:srcCompat="@android:drawable/ic_media_play"
+        app:tint="@color/white"
+        tools:layout_editor_absoluteX="309dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:strokeColor="#00BCD4"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="#E0F7FA"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/bleMac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11:22:33:44:55:66"
+            android:textSize="16sp"
+            android:textColor="#00796B"
+            app:layout_constraintBottom_toTopOf="@+id/bleName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/ble_rssi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-54 dBm"
+            android:textSize="14sp"
+            android:textColor="#00BCD4"
+            app:layout_constraintBottom_toBottomOf="@+id/bleName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bleMac" />
+
+        <TextView
+            android:id="@+id/bleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Device Name"
+            android:textSize="14sp"
+            android:textColor="#004D40"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/bleMac"
+            app:layout_constraintTop_toBottomOf="@+id/bleMac" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

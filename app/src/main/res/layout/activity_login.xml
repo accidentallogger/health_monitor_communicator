@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/circlebg"
+    tools:context=".LoginActivity">
+
+    <!-- Top Nav Bar -->
+
+    <!-- Form container -->
+    <LinearLayout
+        android:id="@+id/formContainer"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="#D6F3F1"
+            android:layout_marginTop="20dp">
+
+            <!-- Username Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/UsernameLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                app:boxStrokeColor="#03C8B9"
+                app:hintTextColor="@color/teal_700">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/Username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:hint="Username"
+                    android:textColor="#03C8B9"
+                    android:padding="16dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Password Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/PasswordLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:passwordToggleEnabled="true"
+                app:boxStrokeColor="#03C8B9"
+                app:hintTextColor="@color/teal_700">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/Password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textColor="#03C8B9"
+                    android:padding="16dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Login Button -->
+            <Button
+                android:id="@+id/LoginBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:paddingHorizontal="60dp"
+                android:text="Log In"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#03C8B9"
+                app:cornerRadius="5dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Opening Image at bottom -->
+    <LinearLayout
+        android:id="@+id/openingImageContainer"
+        android:layout_below="@id/formContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@mipmap/opening"
+        android:orientation="horizontal" />
+
+</RelativeLayout>

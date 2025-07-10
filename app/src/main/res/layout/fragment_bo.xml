@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D6F3F1"
+    android:padding="15dp"
+    >
+
+    <!-- Circular Progress Bar Container -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/circularProgressBarCard"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:cardCornerRadius="125dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/materialCardView"
+        app:layout_constraintVertical_bias="0.4"> <!-- Adjust bias to center it vertically -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/circular_progress_bar_background">
+
+            <!-- Circular ProgressBar -->
+            <ProgressBar
+
+                android:id="@+id/circularProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="75"
+
+            android:progressDrawable="@drawable/circular_progress_bar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Blood Oxygen Value (inside circle) -->
+            <TextView
+                android:id="@+id/tvSpo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-- %"
+                android:textColor="@color/button_background_tint"
+                android:textSize="48sp"
+                android:fontFamily="sans-serif-bold"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/tvHr"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Heart Rate Value (inside circle, below SPO2) -->
+            <TextView
+                android:id="@+id/tvHr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="000 bpm"
+                android:textColor="@color/text_color_dark"
+                android:textSize="24sp"
+                android:fontFamily="sans-serif-medium"
+                app:layout_constraintTop_toBottomOf="@+id/tvSpo2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Graph Card (at the bottom, end to end) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_marginHorizontal="0dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="20dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circularProgressBarCard"
+        > <!-- Ensures it sticks to the bottom -->
+        <!-- Original WaveSurfaceView re-added -->
+        <com.kl.visionsdkdemo.view.WaveSurfaceView
+            android:id="@+id/bo_wave_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" /> <!-- Keeping the cyan background -->
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Start Measure Button (circular, bottom right) -->
+    <!-- Circular BO Measure Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bt_measure_bo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/start_measure"
+        app:backgroundTint="@color/button_background_tint"
+
+        app:srcCompat="@android:drawable/ic_media_play"
+        app:tint="@color/white"
+        tools:layout_editor_absoluteX="309dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
