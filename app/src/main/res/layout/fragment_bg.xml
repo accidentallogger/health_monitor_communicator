@@ -5,11 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D4F1EF"
-    android:padding="16dp">
+    android:background="#D6F3F1"
+    android:padding="16dp"
+    >
 
-    <!-- Spinner Card -->
+    <!-- Main Card with Title -->
     <com.google.android.material.card.MaterialCardView
+        android:layout_marginTop="100dp"
         android:id="@+id/card_spinner_section"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -18,68 +20,106 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="100dp">
+        app:strokeColor="#00BCD4"
+        app:strokeWidth="1dp">
 
-        <LinearLayout
-            android:background="@color/white"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:background="@color/white"
             android:padding="16dp">
 
+            <!-- Blood Glucose Title -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/select_factory"
-                android:textColor="#000000"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-
-            <androidx.appcompat.widget.AppCompatSpinner
-
-                android:id="@+id/spin_test_paper_manufacturer"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:textColor="@color/black"
-                android:background="#D4F1EF"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/select_test_code"
+                android:text="Blood Glucose Measurement"
                 android:textColor="#000000"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:gravity="center"
+                android:layout_marginBottom="16dp"/>
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spin_test_paper_code"
+            <!-- Spinner Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:background="#D4F1EF"/>
-        </LinearLayout>
+                android:orientation="vertical"
+                android:layout_below="@id/title">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_factory"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Factory Spinner Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:strokeColor="#00BCD4"
+                    app:strokeWidth="1dp">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spin_test_paper_manufacturer"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:textColor="@color/black"
+                        android:background="#D4F1EF"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_test_code"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Test Code Spinner Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:strokeColor="#00BCD4"
+                    app:strokeWidth="1dp">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spin_test_paper_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:textColor="@color/black"
+                        android:background="#D4F1EF"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"/>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Result Cards Section -->
     <LinearLayout
         android:id="@+id/card_container"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/card_spinner_section"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="16dp">
 
         <!-- First Row Wrapped in Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginBottom="8dp"
             app:cardCornerRadius="16dp"
-
             app:strokeColor="#00BCD4"
             app:strokeWidth="1dp">
 
@@ -134,25 +174,14 @@
                         android:textStyle="bold"/>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Second Row Wrapped in Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="16dp"
-
-            app:strokeColor="#00BCD4"
-            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@color/white"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:layout_marginTop="16dp">
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
@@ -212,6 +241,5 @@
         app:backgroundTint="@color/button_background_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="20dp" />
-
+        android:layout_margin="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

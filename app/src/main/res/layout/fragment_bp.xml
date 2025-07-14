@@ -5,166 +5,236 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".fragment.BpFragment"
-    android:backgroundTint="#D4F1EF">
+    android:background="#D6F3F1">
 
-
-
-   <!-- Test Button (Hidden) -->
- <!--  <com.google.android.material.button.MaterialButton
-       android:id="@+id/bt_test_bp"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginLeft="10dp"
-       android:text="@string/test_blood_pressure"
-       android:visibility="gone"
-       app:layout_constraintBottom_toTopOf="@id/bt_record"
-       app:layout_constraintLeft_toLeftOf="parent" />-->
-
-<!--
-   <TextView
-       android:id="@+id/textView3"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="16dp"
-       android:layout_marginTop="16dp"
-       android:text="@string/pressurization_data"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent" />
-
-   <TextView
-       android:id="@+id/tv_bp_add"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="16dp"
-       android:text="0"
-       app:layout_constraintStart_toEndOf="@+id/textView3"
-       app:layout_constraintTop_toTopOf="@+id/textView3"
-       app:layout_constraintBottom_toBottomOf="@+id/textView3" />
-
-   <TextView
-       android:id="@+id/textView8"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="8dp"
-       android:text="@string/decompression_data"
-       app:layout_constraintStart_toStartOf="@+id/textView3"
-       app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-   <TextView
-       android:id="@+id/tv_bp_de"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="16dp"
-       android:text="0"
-       app:layout_constraintStart_toEndOf="@+id/textView8"
-       app:layout_constraintTop_toTopOf="@+id/textView8"
-       app:layout_constraintBottom_toBottomOf="@+id/textView8" />
--->
-
-   <!--
-   <TextView
-       android:id="@+id/textView7"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="16dp"
-       android:layout_marginStart="16dp"
-       android:text="@string/number_of_data_points"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintStart_toStartOf="@+id/guideline2" />
-
-   <TextView
-       android:id="@+id/tvDeDataSize"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="8dp"
-       android:text="0"
-       app:layout_constraintTop_toTopOf="@+id/textView7"
-       app:layout_constraintBottom_toBottomOf="@+id/textView7"
-       app:layout_constraintStart_toEndOf="@+id/textView7" />
--->
-<!--   <Switch
-       android:id="@+id/switch_test"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="@string/test"
-       android:layout_marginTop="8dp"
-       android:checked="false"
-       android:visibility="gone"
-       app:layout_constraintTop_toBottomOf="@+id/tv_hr_value"
-       app:layout_constraintBottom_toTopOf="@+id/picker_hr"
-       app:layout_constraintEnd_toEndOf="parent" />
--->
-   <!--<TextView
-       android:id="@+id/bt_record"
-       style="@style/common_text_color"
-       android:layout_width="67dp"
-       android:layout_height="8dp"
-       android:layout_marginStart="8dp"
-       android:text="@string/blood_pressure_record"
-       android:visibility="gone"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="@+id/switch_test" />-->
-
-
+   <!-- Main Vitals Card with Integrated Timer -->
    <com.google.android.material.card.MaterialCardView
-       app:strokeColor="@color/cyan_primary"
-       app:strokeWidth="1dp"
-       android:id="@+id/timerCard"
-       android:layout_width="150dp"
-       android:layout_height="100dp"
-       android:layout_marginTop="40dp"
-       app:cardCornerRadius="16dp"
-       app:cardBackgroundColor="@android:color/white"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent">
-
-      <LinearLayout
-          android:layout_width="100dp"
-          android:layout_height="100dp"
-          android:gravity="left"
-          android:orientation="vertical"
-          android:padding="10dp">
-
-     <!--    <TextView
-             android:id="@+id/textView11"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginBottom="8dp"
-             android:text="@string/measuring_time"
-             android:textColor="#000000"
-             android:textSize="24sp"
-             android:textStyle="bold" />
--->
-         <TextView
-             android:id="@+id/tvDuration"
-             android:layout_width="126dp"
-             android:layout_height="wrap_content"
-             android:text="0"
-             android:gravity="center"
-             android:textColor="#00BCD4"
-             android:textSize="50dp"
-             android:textStyle="bold" />
-
-
-      </LinearLayout>
-
-   </com.google.android.material.card.MaterialCardView>
-
-   <androidx.cardview.widget.CardView
        android:id="@+id/cardVitals"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:layout_marginTop="16dp"
+       android:layout_marginTop="40dp"
        android:layout_marginStart="16dp"
        android:layout_marginEnd="16dp"
        app:cardCornerRadius="16dp"
        app:cardBackgroundColor="@android:color/white"
-       app:layout_constraintTop_toBottomOf="@+id/timerCard"
+       app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent">
+       app:layout_constraintEnd_toEndOf="parent"
+       app:strokeColor="@color/cyan_primary"
+       app:strokeWidth="1dp">
+
+      <RelativeLayout
+
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="16dp"
+          android:layout_marginBottom="10dp">
+
+         <!-- Timer in Top-Right Corner -->
+         <com.google.android.material.card.MaterialCardView
+
+             android:id="@+id/timerCard"
+             android:layout_width="170dp"
+             android:layout_height="80dp"
+             android:layout_above="@+id/linearLayout"
+             android:layout_alignParentEnd="true"
+             android:layout_marginBottom="-9dp"
+             app:cardBackgroundColor="#D4F1EF"
+             app:cardCornerRadius="12dp"
+             app:strokeColor="@color/cyan_primary"
+             app:strokeWidth="1dp"
+             >
+
+            <TextView
+                android:id="@+id/tvDuration"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="0s"
+                android:textColor="@color/black"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+         </com.google.android.material.card.MaterialCardView>
+
+         <!-- Title -->
+         <TextView
+             android:id="@+id/title"
+             android:layout_width="140dp"
+             android:layout_height="wrap_content"
+             android:text="Blood
+             Pressure"
+             android:textColor="@color/black"
+             android:textSize="30sp"
+             android:textStyle="bold"
+             android:layout_marginLeft="10dp"
+             android:layout_marginTop="10dp"/>
+         <!-- Divider -->
+         <View
+             android:layout_width="match_parent"
+             android:layout_height="2dp"
+             android:layout_marginStart="8dp"
+             android:layout_marginEnd="8dp"
+             android:background="#00BCD4"
+             android:layout_marginTop="20dp"
+             android:layout_below="@id/title"/>
+         <!-- Content Below Title -->
+         <LinearLayout
+             android:id="@+id/linearLayout"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_below="@id/title"
+             android:layout_marginTop="8dp"
+             android:orientation="vertical">
+
+            <!-- Systolic & Diastolic Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginVertical="30dp">
+
+               <!-- Systolic Card -->
+               <com.google.android.material.card.MaterialCardView
+                   android:layout_width="0dp"
+                   android:layout_height="80dp"
+                   android:layout_marginEnd="8dp"
+                   android:layout_weight="1"
+                   app:cardBackgroundColor="#D4F1EF"
+                   app:cardCornerRadius="16dp"
+                   app:strokeColor="@color/cyan_primary"
+                   app:strokeWidth="1dp"
+                   >
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:orientation="vertical"
+                      android:padding="12dp">
+
+                     <TextView
+                         android:id="@+id/textView10"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Systolic"
+                         android:textColor="@android:color/black"
+                         android:textSize="14sp"
+                         android:textStyle="bold" />
+
+                     <TextView
+                         android:id="@+id/tv_systolic_value"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="4dp"
+                         android:text="-- /mmHg"
+                         android:textColor="@color/cyan_primary"
+                         android:textSize="16sp"
+                         android:textStyle="bold" />
+                  </LinearLayout>
+               </com.google.android.material.card.MaterialCardView>
+
+               <!-- Diastolic Card -->
+               <com.google.android.material.card.MaterialCardView
+
+                   android:layout_width="0dp"
+                   android:layout_height="80dp"
+                   android:layout_marginStart="8dp"
+                   android:layout_weight="1"
+                   app:cardBackgroundColor="#D4F1EF"
+                   app:cardCornerRadius="16dp"
+                   app:strokeColor="@color/cyan_primary"
+                   app:strokeWidth="1dp">
+
+                  <LinearLayout
+
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:orientation="vertical"
+                      android:padding="12dp">
+
+                     <TextView
+                         android:id="@+id/textView12"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Diastolic"
+                         android:textColor="@android:color/black"
+                         android:textSize="14sp"
+                         android:textStyle="bold" />
+
+                     <TextView
+                         android:id="@+id/tv_diastolic_value"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="4dp"
+                         android:text="-- /mmHg"
+                         android:textColor="@color/cyan_primary"
+                         android:textSize="16sp"
+                         android:textStyle="bold" />
+                  </LinearLayout>
+               </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Heart Rate Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:cardBackgroundColor="#D4F1EF"
+                app:cardCornerRadius="16dp"
+                app:strokeColor="@color/cyan_primary"
+                app:strokeWidth="1dp">
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:gravity="center"
+                   android:orientation="vertical"
+                   android:padding="12dp">
+
+                  <TextView
+                      android:id="@+id/textView14"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Heart Rate"
+                      android:textColor="@android:color/black"
+                      android:textSize="14sp"
+                      android:textStyle="bold" />
+
+                  <TextView
+                      android:id="@+id/tv_hr_value"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="4dp"
+                      android:text="-- /BPM"
+                      android:textColor="@color/cyan_primary"
+                      android:textSize="20sp"
+                      android:textStyle="bold" />
+               </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+         </LinearLayout>
+      </RelativeLayout>
+   </com.google.android.material.card.MaterialCardView>>
+
+   <!-- Visual Indicators Card -->
+   <com.google.android.material.card.MaterialCardView
+       app:strokeColor="@color/cyan_primary"
+       app:strokeWidth="1dp"
+       android:id="@+id/cardIndicators"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginStart="16dp"
+       android:layout_marginEnd="16dp"
+       android:layout_marginTop="16dp"
+       app:cardCornerRadius="16dp"
+       app:cardBackgroundColor="@android:color/white"
+       app:layout_constraintTop_toBottomOf="@+id/cardVitals"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+  >
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -172,295 +242,196 @@
           android:orientation="vertical"
           android:padding="16dp">
 
-         <!-- Top row: Systolic & Diastolic -->
+         <!-- Systolic Indicator -->
          <LinearLayout
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:orientation="horizontal"
-             android:gravity="center"
-             android:layout_marginBottom="12dp">
+             android:orientation="vertical"
+             android:layout_marginBottom="16dp">
 
-            <!-- Systolic -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="16dp"
-                app:strokeColor="@color/cyan_primary"
-                app:strokeWidth="1dp"
-                app:cardBackgroundColor="#D4F1EF">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Systolic (mmHg)"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/cyan_primary"
+                android:layout_marginBottom="8dp"/>
 
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:orientation="vertical"
-                   android:gravity="center"
-                   android:padding="12dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/bp_indicator_background_sys">
 
-                  <TextView
-                      android:id="@+id/textView10"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="@string/systolic_blood_pressure"
-                      android:textSize="14sp"
-                      android:textStyle="bold"
-                      android:textColor="@android:color/black" />
+               <ImageView
+                   android:id="@+id/indicatorPointerSys"
+                   android:layout_width="16dp"
+                   android:layout_height="16dp"
+                   android:layout_marginTop="-8dp"
+                   android:src="@drawable/circle_pointer"
+                   android:layout_centerVertical="true"/>
 
-                  <TextView
-                      android:id="@+id/tv_systolic_value"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="-- /mmHg"
-                      android:textSize="16sp"
-                      android:textStyle="bold"
-                      android:textColor="@color/cyan_primary"
-                      android:layout_marginTop="4dp" />
-               </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Diastolic -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="16dp"
-                app:strokeColor="@color/cyan_primary"
-                app:strokeWidth="1dp"
-                app:cardBackgroundColor="#D4F1EF"
-                >
-
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:orientation="vertical"
-                   android:gravity="center"
-                   android:padding="12dp">
-
-                  <TextView
-                      android:id="@+id/textView12"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="@string/diastolic_pressure"
-                      android:textSize="14sp"
-                      android:textStyle="bold"
-                      android:textColor="@android:color/black" />
-
-                  <TextView
-                      android:id="@+id/tv_diastolic_value"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="-- /mmHg"
-                      android:textSize="16sp"
-                      android:textStyle="bold"
-                      android:textColor="@color/cyan_primary"
-                      android:layout_marginTop="4dp" />
-               </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-         </LinearLayout>
-
-         <!-- Bottom row: Heart Rate (Full Width, Bigger Box) -->
-         <com.google.android.material.card.MaterialCardView
-             android:layout_width="match_parent"
-             android:layout_height="120dp"
-             app:cardCornerRadius="16dp"
-             app:strokeColor="@color/cyan_primary"
-             app:strokeWidth="1dp"
-             app:cardBackgroundColor="#D4F1EF">
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="12dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
 
                <TextView
-                   android:id="@+id/textView14"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="@string/heart_rate"
-                   android:textSize="14sp"
-                   android:textStyle="bold"
-                   android:textColor="@android:color/black" />
+                   android:text=" "
+                   android:textSize="12sp"
+                   android:textColor="@color/black"/>
 
                <TextView
-                   android:id="@+id/tv_hr_value"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:gravity="start"
+                   android:layout_marginStart="80dp"
+                   android:text="90"
+                   android:textColor="@color/black"
+                   android:textSize="12sp" />
+
+               <TextView
+                   android:layout_marginEnd="50dp"
+                   android:layout_marginStart="20dp"
+                   android:textColor="@color/black"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:text="-- /BPM"
-                   android:textSize="20sp"
-                   android:textStyle="bold"
-                   android:textColor="@color/cyan_primary"
-                   android:layout_marginTop="4dp" />
+                   android:minWidth="160dp"
+                   android:text="140"
+                   android:textSize="12sp"/>
             </LinearLayout>
-         </com.google.android.material.card.MaterialCardView>
+         </LinearLayout>
+
+         <!-- Diastolic Indicator -->
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diastolic (mmHg)"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/cyan_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/bp_indicator_background_dias">
+
+               <ImageView
+                   android:id="@+id/indicatorPointerDias"
+                   android:layout_width="16dp"
+                   android:layout_height="16dp"
+                   android:layout_marginTop="-8dp"
+                   android:src="@drawable/circle_pointer"
+                   android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+               <TextView
+                   android:textColor="@color/black"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:text="60"
+                   android:textSize="12sp"
+                   android:gravity="end"
+                   android:layout_marginStart="50dp"/>
+
+               <TextView
+                   android:layout_marginEnd="160dp"
+                   android:layout_marginStart="20dp"
+                   android:textColor="@color/black"
+                   android:layout_width="100dp"
+                   android:layout_height="wrap_content"
+                   android:text="90"
+                   android:textSize="12sp"/>
+            </LinearLayout>
+         </LinearLayout>
+
+         <!-- Heart Rate Indicator -->
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Heart Rate (BPM)"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/cyan_primary"
+                android:layout_marginBottom="8dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/hr_indicator_background">
+
+               <ImageView
+                   android:id="@+id/indicatorPointerHr"
+                   android:layout_width="16dp"
+                   android:layout_height="16dp"
+                   android:layout_marginTop="-8dp"
+                   android:src="@drawable/circle_pointer"
+                   android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+               <TextView
+                   android:textColor="@color/black"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text=" "
+                   android:textSize="12sp"/>
+
+               <TextView
+                   android:layout_marginStart="50dp"
+                   android:textColor="@color/black"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:text="60"
+                   android:textSize="12sp"
+                   android:gravity="start"/>
+
+               <TextView
+                   android:textColor="@color/black"
+                   android:layout_width="200dp"
+                   android:layout_height="wrap_content"
+                   android:text="100"
+                   android:layout_marginEnd="50dp"
+                   android:layout_marginStart="10dp"
+                   android:textSize="12sp"/>
+            </LinearLayout>
+         </LinearLayout>
       </LinearLayout>
-   </androidx.cardview.widget.CardView>
-
-   <com.google.android.material.card.MaterialCardView
-       android:id="@+id/cardPickers"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="16dp"
-       android:layout_marginEnd="16dp"
-       android:layout_marginTop="16dp"
-       app:cardCornerRadius="16dp"
-
-       app:cardBackgroundColor="@android:color/white"
-       app:layout_constraintTop_toBottomOf="@+id/cardVitals"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent">
-
-      <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:padding="16dp">
-
-         <!-- Labels -->
-         <TextView
-             android:id="@+id/textView9"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="Systolic"
-             android:textSize="16sp"
-             android:textStyle="bold"
-             android:textColor="@color/cyan_primary"
-             app:layout_constraintBottom_toTopOf="@+id/picker_systolic"
-             app:layout_constraintStart_toStartOf="@+id/picker_systolic"
-             app:layout_constraintEnd_toEndOf="@+id/picker_systolic"
-             app:layout_constraintHorizontal_bias="0.5" />
-
-         <TextView
-             android:id="@+id/textView13"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="Diastolic"
-             android:textSize="16sp"
-             android:textStyle="bold"
-             android:textColor="@color/cyan_primary"
-             app:layout_constraintBottom_toTopOf="@+id/picker_diastolic"
-             app:layout_constraintStart_toStartOf="@+id/picker_diastolic"
-             app:layout_constraintEnd_toEndOf="@+id/picker_diastolic" />
-
-         <TextView
-             android:id="@+id/textView15"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="Heart rate"
-             android:textSize="16sp"
-             android:textStyle="bold"
-             android:textColor="@color/cyan_primary"
-             app:layout_constraintBottom_toTopOf="@+id/picker_hr"
-             app:layout_constraintStart_toStartOf="@+id/picker_hr"
-             app:layout_constraintEnd_toEndOf="@+id/picker_hr" />
-
-         <!-- Number Pickers -->
-         <NumberPicker
-             android:id="@+id/picker_systolic"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             app:layout_constraintTop_toBottomOf="@+id/textView9"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintEnd_toStartOf="@+id/picker_diastolic"
-             app:layout_constraintHorizontal_bias="0.5"
-             />
-
-         <NumberPicker
-             android:id="@+id/picker_diastolic"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             app:layout_constraintTop_toBottomOf="@+id/textView13"
-             app:layout_constraintStart_toEndOf="@+id/picker_systolic"
-             app:layout_constraintEnd_toStartOf="@+id/picker_hr"
-             app:layout_constraintHorizontal_bias="0.5" />
-
-         <NumberPicker
-             android:id="@+id/picker_hr"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintHorizontal_bias="0.5"
-             app:layout_constraintStart_toEndOf="@+id/picker_diastolic"
-             app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-      </androidx.constraintlayout.widget.ConstraintLayout>
    </com.google.android.material.card.MaterialCardView>
 
-   <!-- Hidden Values -->
- <!--  <TextView
-       android:id="@+id/tvSampleRate"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="-"
-       style="@style/common_text_color"
-       android:visibility="gone"
-  app:layout_constraintBottom_toTopOf="@+id/textView10"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent" />-->
-<!--
-   <TextView
-       android:id="@+id/tvSampleTime"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="0"
-       android:visibility="gone"
-      />-->
-
-   <!-- Error for Systolic -->
-   <TextView
-       android:id="@+id/tvErrorRangeSys"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="--"
-       android:textColor="@android:color/holo_red_dark"
-       android:visibility="gone"
-       app:layout_constraintTop_toBottomOf="@+id/cardVitals"
-       app:layout_constraintStart_toStartOf="@+id/picker_systolic"
-       app:layout_constraintEnd_toEndOf="@+id/picker_systolic"
-       android:layout_marginTop="4dp" />
-
-   <!-- Error for Diastolic -->
-   <TextView
-       android:id="@+id/tvErrorRangeDias"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="--"
-       android:textColor="@android:color/holo_red_dark"
-       android:visibility="gone"
-       app:layout_constraintTop_toBottomOf="@+id/cardVitals"
-       app:layout_constraintStart_toStartOf="@+id/picker_diastolic"
-       app:layout_constraintEnd_toEndOf="@+id/picker_diastolic"
-       android:layout_marginTop="4dp" />
-
-   <!-- Error for Heart Rate -->
-   <TextView
-       android:id="@+id/tvErrorRangeHr"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="--"
-       android:textColor="@android:color/holo_red_dark"
-       android:visibility="gone"
-       app:layout_constraintTop_toBottomOf="@+id/cardVitals"
-       app:layout_constraintStart_toStartOf="@+id/picker_hr"
-       app:layout_constraintEnd_toEndOf="@+id/picker_hr"
-       android:layout_marginTop="4dp" />
-
-   <!-- Guideline -->
-   <androidx.constraintlayout.widget.Guideline
-       android:id="@+id/guideline2"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       app:layout_constraintGuide_percent="0.5" />
-
-   <!-- Group Picker -->
-   <androidx.constraintlayout.widget.Group
-       android:id="@+id/group_picker"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       app:constraint_referenced_ids="textView15,textView13,textView9,picker_systolic,picker_diastolic,picker_hr" />
    <!-- Floating Action Button -->
    <com.google.android.material.floatingactionbutton.FloatingActionButton
        android:id="@+id/bt_measure_bp"
@@ -468,11 +439,10 @@
        android:layout_height="wrap_content"
        android:contentDescription="Start BP"
        android:layout_margin="24dp"
-
        app:srcCompat="@android:drawable/ic_media_play"
-   app:tint="@color/white"
+       app:tint="@color/white"
        app:backgroundTint="@color/button_background_tint"
-   app:layout_constraintBottom_toBottomOf="parent"
-   app:layout_constraintEnd_toEndOf="parent"/>
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

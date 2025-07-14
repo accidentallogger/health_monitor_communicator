@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -92,13 +94,15 @@ public class BpFragment extends BaseMeasureFragment<FragmentBpBinding> implement
     protected void initView(View rootView) {
         BleManager.getInstance().setBpResultListener(this);
         BleManager.getInstance().setRawBpDataCallback(this);
-        getBinding().groupPicker.setVisibility(View.GONE);
+       // getBinding().groupPicker.setVisibility(View.GONE);
         getBinding().btMeasureBp.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 if (!isTest) {
                     isTest=true;
-                    //开始测量
+                    //开始测量l,
                     resetValue();
                     bpDeTxtFile = createFile("bpDeTxt.txt");
                     bpAddTxtFile = createFile("bpAddTxt.txt");
@@ -149,10 +153,10 @@ public class BpFragment extends BaseMeasureFragment<FragmentBpBinding> implement
         });
 */
      //   getBinding().switchTest.setChecked(isTest);
-        initPicker();
+       // initPicker();
     }
 
-    private void initPicker() {
+ /*  private void initPicker() {
         NumberPicker systolicPicker = getBinding().pickerSystolic;
         String[] sysValue = new String[23];
         for (int i = 3; i <=25 ; i++) {
@@ -200,7 +204,7 @@ public class BpFragment extends BaseMeasureFragment<FragmentBpBinding> implement
             }
         });
     }
-
+*/
     @Override
     public void onWriteSuccess() {
         Log.e("BpFragment", "onWriteSuccess: BP" );
@@ -357,9 +361,11 @@ public class BpFragment extends BaseMeasureFragment<FragmentBpBinding> implement
         bundle.putInt(DIASTOLIC,diastolic);
         bundle.putInt(HR,heartRate);
         msg.setData(bundle);
-        handler.sendMessage(msg); // Send message to handler to update UI with final result
-    }
+        handler.sendMessage(msg);
 
+        // Update the visual indicators
+        updateIndicators(systolic, diastolic, heartRate);
+    }
     @Override
     public void onLeadError() {
         Log.e("BpFragment", "onLeadError: ");
@@ -461,5 +467,49 @@ public class BpFragment extends BaseMeasureFragment<FragmentBpBinding> implement
         // If you set them in initView, clear them here.
         BleManager.getInstance().setBpResultListener(null); // Clear listener
         BleManager.getInstance().setRawBpDataCallback(null); // Clear listener
+    }
+    private void updateIndicators(int systolic, int diastolic, int heartRate) {
+        // Update systolic indicator (range: 70-190 mmHg)
+        updatePointerPosition(getBinding().indicatorPointerSys, systolic, 0, 300);
+
+        // Update diastolic indicator (range: 40-100 mmHg)
+        updatePointerPosition(getBinding().indicatorPointerDias, diastolic, 0, 300);
+
+        // Update heart rate indicator (range: 40-120 BPM)
+        updatePointerPosition(getBinding().indicatorPointerHr, heartRate, 0, 300);
+    }
+
+    private void updatePointerPosition(View pointer, int value, int min, int max) {
+        if (getBinding() == null || pointer == null) return;
+
+        // Get the parent container
+        View parent = (View) pointer.getParent();
+        parent.post(() -> {
+            int parentWidth = parent.getWidth(); // Actual width in pixels
+            int pointerWidth = pointer.getWidth();
+            Log.d("IndicatorDebug", "Actual width: " + parentWidth + "px");
+
+
+            // Calculate position percentage (0-1)
+            float percentage = ((float)(value - min) / (float)(max - min));
+
+            // Clamp between 0-1
+            percentage = Math.max(0, Math.min(1, percentage));
+
+            // Calculate pixel position (accounting for pointer width)
+            float position = percentage * (parentWidth - pointerWidth);
+
+            // Set new position
+            if (pointer.getLayoutParams() instanceof ConstraintLayout.LayoutParams) {
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) pointer.getLayoutParams();
+                params.horizontalBias = percentage; // This works better for ConstraintLayout
+                pointer.setLayoutParams(params);
+            } else if (pointer.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pointer.getLayoutParams();
+                params.leftMargin = (int) position;
+                params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+                pointer.setLayoutParams(params);
+            }
+        });
     }
 }

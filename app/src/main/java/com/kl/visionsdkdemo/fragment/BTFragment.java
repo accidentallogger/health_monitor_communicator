@@ -219,4 +219,6 @@ public class BTFragment extends Fragment implements IBtResultListener, IBleWrite
         }
         handler.removeCallbacksAndMessages(null);
     }
+
+
 }

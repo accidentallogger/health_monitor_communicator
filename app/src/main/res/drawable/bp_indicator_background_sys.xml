@@ -1,0 +1,28 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Yellow section (0-90) -->
+    <item android:top="4dp" android:left="0dp" android:right="90dp" android:height="12dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFF200"/> <!-- Yellow -->
+            <corners
+                android:topLeftRadius="12dp"
+                android:bottomLeftRadius="12dp"/>
+        </shape>
+    </item>
+
+    <!-- Green section (90-140) -->
+    <item android:top="4dp" android:left="90dp" android:right="140dp" android:height="12dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#4CAF50"/> <!-- Green -->
+        </shape>
+    </item>
+
+    <!-- Red section (140+) -->
+    <item android:top="4dp" android:left="140dp" android:right="0dp" android:height="12dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FF0000"/> <!-- Red -->
+            <corners
+                android:topRightRadius="12dp"
+                android:bottomRightRadius="12dp"/>
+        </shape>
+    </item>
+</layer-list>

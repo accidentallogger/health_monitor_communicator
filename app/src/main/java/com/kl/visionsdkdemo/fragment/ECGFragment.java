@@ -2,6 +2,7 @@ package com.kl.visionsdkdemo.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -65,8 +67,11 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
     @Override
     protected void initView(View rootView) {
         getBinding().gainSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                 // Dropdown background
+               // ((TextView) view).setTextColor(Color.BLACK);
                 getBinding().ecgView.setGain(position == 0 ? 1 : (position == 1 ? 2 : 5));
             }
 

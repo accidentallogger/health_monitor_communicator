@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,221 +8,173 @@
     android:background="#D6F3F1"
     android:padding="16dp">
 
-    <!--
-    // In your res/values/colors.xml, you would define these colors:
-    <resources>
-        <color name="cyan_primary">#0EA5E9</color>
-        <color name="text_color_dark">#1F2937</color>
-        <color name="background_primary">#F8FAFC</color>
-        <color name="button_background_tint">#03C8B9</color>
-        <color name="white">#FFFFFF</color>
-    </resources>
-    -->
-
-    <!-- Start Measure Button (circular, bottom center) -->
-    <GridLayout
-        android:layout_marginTop="110dp"
-        android:id="@+id/dataGrid"
+    <!-- Main Body Temperature Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardBodyTemperature"
         android:layout_width="0dp"
-        android:layout_height="400dp"
-        android:layout_marginBottom="16dp"
-        android:alignmentMode="alignMargins"
-        android:columnCount="2"
-        android:columnOrderPreserved="false"
-        android:padding="8dp"
-        android:rowCount="2"
-        app:layout_constraintBottom_toTopOf="@+id/bt_measure_bt"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="24dp"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:strokeColor="#00BCD4"
+        app:strokeWidth="1dp">
 
-        <!-- Body Temperature Card - Grid Item 1,1 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardBodyTemperature"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="16dp"
-            app:strokeColor="#00BCD4"
-            app:strokeWidth="1dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@color/white">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Body Temperature"
+                android:textColor="@color/text_color_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="-- ℃"
+                android:textColor="@color/button_background_tint"
+                android:textSize="48sp"
+                android:textStyle="bold"/>
+
+            <!-- Secondary readings row -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/body_temperature"
-                    android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_bt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-bold"
-                    android:gravity="center"
-                    android:text="-- ℃"
-                    android:textColor="@color/cyan_primary"
-                    android:textSize="24sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Object Temperature Card - Grid Item 1,2 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardObjectTemperature"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="16dp"
-            app:strokeColor="#00BCD4"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/bold"
-                    android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-bold"
-                    android:gravity="center"
-                    android:text="-- ℃"
-                    android:textColor="@color/cyan_primary"
-                    android:textSize="24sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Environment Temperature Card - Grid Item 2,1 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardEnvironmentTemperature"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="16dp"
-            app:strokeColor="#00BCD4"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/environment"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Object: --℃"
                     android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/tv_environment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-bold"
-                    android:gravity="center"
-                    android:text="-- ℃"
-                    android:textColor="@color/cyan_primary"
-                    android:textSize="24sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Voltage Card - Grid Item 2,2 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardVoltage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="16dp"
-            app:strokeColor="#00BCD4"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/voltage"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Env: --℃"
                     android:textColor="@color/text_color_dark"
-                    android:textSize="16sp" />
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/tv_voltage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-bold"
-                    android:gravity="center"
-                    android:text="-- mV"
-                    android:textColor="@color/cyan_primary"
-                    android:textSize="24sp" />
+                    android:layout_marginHorizontal="8dp"
+                    android:text="Voltage: --mV"
+                    android:textColor="@color/text_color_dark"
+                    android:textSize="14sp"/>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    </GridLayout>
+    <!-- Temperature Range Indicator -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="16dp"
+        app:strokeColor="#00BCD4"
+        app:strokeWidth="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardBodyTemperature">
 
-    <!-- Circular BT Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Temperature Range"
+                android:textColor="@color/text_color_dark"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Range indicator bar -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/bt_temp_indicator">
+
+                <ImageView
+                    android:id="@+id/temp_indicator_pointer"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="-8dp"
+
+                    android:src="@drawable/circle_pointer" />
+            </RelativeLayout>
+
+            <!-- Range labels -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="&lt;36.0℃"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Normal (36.0-37.1℃)"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:layout_marginStart="-40dp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="&gt;37.1℃"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="90dp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Measure Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/bt_measure_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="20dp"
         android:contentDescription="@string/start_measure"
         app:backgroundTint="@color/button_background_tint"
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_media_play"
-        app:tint="@color/white"
-        tools:layout_editor_absoluteX="309dp" />
-
-
+        app:tint="@color/white"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
