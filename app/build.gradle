@@ -65,7 +65,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
     implementation(name: 'visionsdk_v1.0.26', ext: 'aar')*/
 
-
+    implementation 'com.google.android.material:material:1.6.0'
         implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 

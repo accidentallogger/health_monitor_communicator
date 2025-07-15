@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:strokeColor="#00BCD4"
+        app:strokeColor="@color/cyan_primary"
         app:strokeWidth="1dp">
 
         <LinearLayout
@@ -86,7 +86,7 @@
                 android:layout_height="2dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:background="#00BCD4"/>
+                android:background="@color/cyan_primary"/>
 
             <!-- Data Cards Section -->
             <LinearLayout
@@ -275,7 +275,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:background="#D4F1EF"
                             android:orientation="vertical"
                             android:padding="12dp">
@@ -283,16 +283,16 @@
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/gain_spinner"
                                 android:layout_width="match_parent"
-                                android:layout_height="33dp"
-                                android:layout_marginTop="8dp"
-                                android:entries="@array/ecg_gain"
-                                android:minHeight="48dp"
-                                android:spinnerMode="dropdown"
-                                android:textColor="@color/black"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="-12dp"
                                 android:background="#D4F1EF"
-                                android:gravity="center"/>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
+                                android:dropDownVerticalOffset="4dp"
+                                android:entries="@array/ecg_gain"
+                                android:gravity="center"
+                                android:minHeight="48dp"
+                                android:popupBackground="@android:color/white"
+                                android:spinnerMode="dropdown" />
+                        </LinearLayout>     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
@@ -345,7 +345,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bt_measure_ecg"
-        app:strokeColor="#00BCD4"
+        app:strokeColor="@color/cyan_primary"
         app:strokeWidth="1dp">
 
         <FrameLayout
@@ -357,7 +357,7 @@
                 android:layout_height="match_parent"
                 app:largeGridColor="@color/white"
                 app:smallGridColor="@color/white"
-                app:strokeColor="#00BCD4"
+                app:strokeColor="@color/cyan_primary"
                 app:strokeWidth="1dp"/>
 
             <com.kl.visionsdkdemo.view.ecg.ChartView

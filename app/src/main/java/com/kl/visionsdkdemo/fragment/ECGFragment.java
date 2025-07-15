@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,12 +67,39 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
 
     @Override
     protected void initView(View rootView) {
-        getBinding().gainSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        // Create the spinner adapter with custom styling
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                getResources().getStringArray(R.array.ecg_gain)
+        ) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                ((TextView) view).setTextColor(Color.BLACK);  // Selected item text color
+                return view;
+            }
 
             @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = (TextView) view;
+                textView.setTextColor(Color.BLACK);  // Dropdown items text color
+                textView.setBackgroundColor(Color.WHITE);  // Dropdown items background
+                return view;
+            }
+        };
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        getBinding().gainSpinner.setAdapter(adapter);
+
+        // Spinner selection listener
+        getBinding().gainSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 // Dropdown background
-               // ((TextView) view).setTextColor(Color.BLACK);
+                if (view != null) {
+                    ((TextView) view).setTextColor(Color.BLACK);
+                }
                 getBinding().ecgView.setGain(position == 0 ? 1 : (position == 1 ? 2 : 5));
             }
 
@@ -79,6 +107,7 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        // Set initial spinner selection
         float gain = getBinding().ecgView.getGain();
         getBinding().gainSpinner.setSelection(gain == 1f ? 0 : (gain == 2f ? 1 : 2));
 
@@ -86,6 +115,7 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
             getBinding().ecgView.setSampleRate(BleManager.getInstance().getSampleRate());
         }
 
+        // Measure button click listener
         getBinding().btMeasureEcg.setOnClickListener(v -> {
             if (!isMeasuring) {
                 startMeasure();

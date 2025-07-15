@@ -7,7 +7,30 @@
     android:background="#D6F3F1"
     android:padding="15dp"
     >
+    <LinearLayout app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        android:gravity="center"
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/circularProgressBarCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <!-- Heart Rate Value (inside circle, below SPO2) -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Blood Oxygen Monitor"
+            android:textColor="@color/text_color_dark"
+            android:textSize="35sp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
 
+            />
+
+    </LinearLayout>
     <!-- Circular Progress Bar Container -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/circularProgressBarCard"
@@ -84,7 +107,7 @@
         android:layout_marginHorizontal="0dp"
         android:layout_marginBottom="16dp"
         app:cardCornerRadius="20dp"
-        app:strokeColor="#00BCD4"
+        app:strokeColor="@color/cyan_primary"
         app:strokeWidth="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

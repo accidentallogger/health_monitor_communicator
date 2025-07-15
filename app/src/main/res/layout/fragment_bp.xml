@@ -75,7 +75,7 @@
              android:layout_height="2dp"
              android:layout_marginStart="8dp"
              android:layout_marginEnd="8dp"
-             android:background="#00BCD4"
+             android:background="@color/cyan_primary"
              android:layout_marginTop="20dp"
              android:layout_below="@id/title"/>
          <!-- Content Below Title -->
@@ -267,9 +267,9 @@
                    android:id="@+id/indicatorPointerSys"
                    android:layout_width="16dp"
                    android:layout_height="16dp"
+                   android:layout_centerVertical="true"
                    android:layout_marginTop="-8dp"
-                   android:src="@drawable/circle_pointer"
-                   android:layout_centerVertical="true"/>
+                   android:src="@drawable/circle_pointer" />
 
             </RelativeLayout>
 

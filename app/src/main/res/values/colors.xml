@@ -21,9 +21,9 @@
     <color name="cyan_primary">#0EA5E9</color>
     <color name="text_color_dark">#1F2937</color>
     <color name="background_primary">#F8FAFC</color>
-    <color name="progress_track_color">#E0F2F1</color>
-    <color name="progress_fill_color">#11C8B5</color>
-    <color name="button_background_tint">#03C8B9</color>
+    <color name="progress_track_color">#F6FDFC</color>
+    <color name="progress_fill_color">#0EA5E9</color>
+    <color name="button_background_tint">#0EA5E9</color>
 
 
 </resources>

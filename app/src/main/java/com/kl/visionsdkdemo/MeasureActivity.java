@@ -12,35 +12,33 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
-import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kl.visionsdkdemo.base.App;
 import com.kl.visionsdkdemo.base.BaseVBindingActivity;
 import com.mintti.visionsdk.ble.BleManager;
 import com.mintti.visionsdk.ble.callback.IBleConnectionListener;
-import com.kl.visionsdkdemo.adapter.MeasureFragmentAdapter;
 import com.kl.visionsdkdemo.databinding.ActivityMeasureBinding;
-import com.mintti.visionsdk.ble.callback.IDeviceVersionCallback;
-
+import com.kl.visionsdkdemo.fragment.MeasurementFragment;
+import com.kl.visionsdkdemo.fragment.RecordFragment;
+import com.kl.visionsdkdemo.fragment.SettingsFragment;
 
 import java.io.File;
-import java.util.List;
 
 public class MeasureActivity extends BaseVBindingActivity<ActivityMeasureBinding> implements IBleConnectionListener {
-    private MeasureFragmentAdapter fragmentAdapter;
     private ActionBar actionBar;
-
     private boolean isUpdate = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_measure);
-        actionBar = this.getSupportActionBar();
+        actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.measure);
         }
         initView();
+        setupBottomNavigation();
     }
 
     @Override
@@ -49,34 +47,39 @@ public class MeasureActivity extends BaseVBindingActivity<ActivityMeasureBinding
     }
 
     private void initView() {
+        // Initialize your main content with the measurement fragment by default
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new MeasurementFragment())
+                .commit();
+    }
 
-        fragmentAdapter = new MeasureFragmentAdapter(getSupportFragmentManager());
-        getBinding().viewPager.setAdapter(fragmentAdapter);
-        getBinding().viewPager.setOffscreenPageLimit(5);
-        getBinding().tabLayout.setupWithViewPager(getBinding().viewPager);
-        getBinding().tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-//                if (actionBar != null){
-//                    actionBar.setTitle(tab.getText());
-//                }
+    private void setupBottomNavigation() {
+        BottomNavigationView bottomNav = getBinding().bottomNav;
+        bottomNav.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_measurement) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new MeasurementFragment())
+                        .commit();
+                return true;
+            } else if (itemId == R.id.nav_record) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new RecordFragment())
+                        .commit();
+                return true;
+            } else if (itemId == R.id.nav_settings) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new SettingsFragment())
+                        .commit();
+                return true;
             }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            return false;
         });
     }
 
     public void setIsUpdate(boolean update) {
         isUpdate = update;
-        Log.e("MeasureActivity", "setIsUpdate: "+update );
+        Log.e("MeasureActivity", "setIsUpdate: " + update);
     }
 
     @Override
@@ -93,29 +96,18 @@ public class MeasureActivity extends BaseVBindingActivity<ActivityMeasureBinding
 
     @Override
     public void onBackPressed() {
-
         if (BleManager.getInstance().isConnected()) {
-
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this)
                     .setTitle(R.string.hint)
                     .setMessage(R.string.want_disconnect)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            BleManager.getInstance().disconnect();
-                            dialog.cancel();
-                            finish();
-                        }
-                    }).setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    }).create();
-            alertDialog.show();
-
-
-        }else {
+                    .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                        BleManager.getInstance().disconnect();
+                        dialog.cancel();
+                        finish();
+                    })
+                    .setNegativeButton(R.string.cancle, (dialog, which) -> dialog.cancel())
+                    .show();
+        } else {
             super.onBackPressed();
         }
     }
@@ -127,32 +119,33 @@ public class MeasureActivity extends BaseVBindingActivity<ActivityMeasureBinding
 
     @Override
     public void onConnectFailed(String mac) {
-
+        // Handle connection failure
     }
 
     @Override
     public void onDisconnected(String mac, boolean isActiveDisconnect) {
-        Log.e("MeasureActivity", "onDisconnected: "+mac + "  "+isActiveDisconnect);
-        if (!isActiveDisconnect && !isUpdate){
+        Log.e("MeasureActivity", "onDisconnected: " + mac + "  " + isActiveDisconnect);
+        if (!isActiveDisconnect && !isUpdate) {
             showToast(getString(R.string.bluetooth_disconnected));
             finish();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_measure,menu);
+        getMenuInflater().inflate(R.menu.menu_measure, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_share){
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_item_share) {
             File dataFileDir = getExternalFilesDir("data");
             File[] files = dataFileDir.listFiles();
             showShareFileDialog(files);
             return true;
-        }else if (item.getItemId() == R.id.menu_item_delete){
+        } else if (itemId == R.id.menu_item_delete) {
             File dataFileDir = getExternalFilesDir("data");
             File[] files = dataFileDir.listFiles();
             for (File file : files) {
@@ -163,6 +156,4 @@ public class MeasureActivity extends BaseVBindingActivity<ActivityMeasureBinding
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

@@ -27,7 +27,7 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:background="#D6F3F1"
+            android:background="#92D6F3F1"
             android:layout_marginTop="20dp">
 
             <!-- Username Field -->
@@ -38,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 app:boxStrokeColor="#03C8B9"
-                app:hintTextColor="@color/teal_700">
+                app:hintTextColor="@color/teal_700"
+                android:textColorHint="#7B9E99">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/Username"
@@ -58,8 +59,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:passwordToggleEnabled="true"
+                app:passwordToggleTint="#7B9E99"
                 app:boxStrokeColor="#03C8B9"
-                app:hintTextColor="@color/teal_700">
+                app:hintTextColor="@color/teal_700"
+                android:textColorHint="#7B9E99">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/Password"
