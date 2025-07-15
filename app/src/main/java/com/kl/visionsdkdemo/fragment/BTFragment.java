@@ -74,6 +74,8 @@ public class BTFragment extends BaseVBindingFragment<FragmentBtBinding>
         getBinding().btMeasureBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getBinding().btMeasureBt.setImageResource(!isCheckModel ? R.drawable.ic_stop : R.drawable.ic_play);
+
                 if (!isCheckModel){
 
                     //开始测量

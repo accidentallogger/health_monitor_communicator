@@ -375,10 +375,20 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:contentDescription="@string/start_measure"
-        app:srcCompat="@android:drawable/ic_media_play"
+        app:srcCompat="@drawable/ic_play"
         app:tint="@color/white"
         app:backgroundTint="@color/button_background_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Save Data"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ecg_view_container"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

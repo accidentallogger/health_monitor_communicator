@@ -236,7 +236,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/start_measure"
-        app:srcCompat="@android:drawable/ic_media_play"
+        app:srcCompat="@drawable/ic_play"
         app:tint="@color/white"
         app:backgroundTint="@color/button_background_tint"
         app:layout_constraintBottom_toBottomOf="parent"

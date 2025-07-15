@@ -135,7 +135,7 @@
         android:contentDescription="@string/start_measure"
         app:backgroundTint="@color/button_background_tint"
 
-        app:srcCompat="@android:drawable/ic_media_play"
+        app:srcCompat="@drawable/ic_play"
         app:tint="@color/white"
         tools:layout_editor_absoluteX="309dp" />
 

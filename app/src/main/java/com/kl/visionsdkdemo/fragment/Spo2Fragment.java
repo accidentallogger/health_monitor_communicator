@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.kl.visionsdkdemo.R;
 import com.kl.visionsdkdemo.databinding.FragmentBoBinding;
 import com.kl.visionsdkdemo.fragment.BaseMeasureFragment;
 import com.kl.visionsdkdemo.view.PPGDrawWave;
@@ -43,7 +44,7 @@ public class Spo2Fragment extends BaseMeasureFragment<FragmentBoBinding>
     private PPGDrawWave oxWave;
     private Handler mHandler;
     private boolean isMeasureEnd;
-    private boolean isMeasuring = false;  // <-- NEW FLAG
+    private boolean isMeasuring = false;
 
     private File boGlowFile;
     private File boInfraredFile;
@@ -75,6 +76,8 @@ public class Spo2Fragment extends BaseMeasureFragment<FragmentBoBinding>
         getBinding().btMeasureBo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getBinding().btMeasureBo.setImageResource(!isMeasuring ? R.drawable.ic_stop : R.drawable.ic_play);
+
                 if (!isMeasuring) {
                     // Start measurement
                     isMeasuring = true;

@@ -2,6 +2,7 @@ package com.kl.visionsdkdemo.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,9 @@ import com.kl.visionsdkdemo.databinding.FragmentBgBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -96,16 +100,18 @@ boolean measure=false;
         getBinding().btMeasureBg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (measure) {
+                getBinding().btMeasureBg.setImageResource(!measure ? R.drawable.ic_stop : R.drawable.ic_play);
+
+                if (!measure) {
                     resetValue();
                     //先校准   校准成功再写入指令开始血糖采集
                     adjustCount = 0;
                     BleManager.getInstance().startMeasure(MeasureType.TYPE_BG, BGFragment.this);
                     getBinding().btMeasureBg.setEnabled(false);
                     handler.sendEmptyMessageDelayed(MSG_ADJUST_TIMEOUT,1000*10);
-measure=false;
-                }else {
 measure=true;
+                }else {
+measure=false;
                   //  getBinding().btMeasureBg.setText(getString(R.string.start_measure));
                     resetValue();
                     BleManager.getInstance().stopMeasure(MeasureType.TYPE_BG, BGFragment.this);
@@ -404,4 +410,7 @@ measure=true;
         BleManager.getInstance().setRawBgDataCallback(null);
         handler.removeCallbacksAndMessages(null);
     }
+
+
+
 }

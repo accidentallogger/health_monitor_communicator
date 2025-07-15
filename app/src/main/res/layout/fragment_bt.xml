@@ -176,6 +176,6 @@
         app:backgroundTint="@color/button_background_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_media_play"
+        app:srcCompat="@drawable/ic_play"
         app:tint="@color/white"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

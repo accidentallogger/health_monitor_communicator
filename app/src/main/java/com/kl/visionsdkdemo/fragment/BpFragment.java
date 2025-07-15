@@ -99,6 +99,7 @@ public class BpFragment extends BaseMeasureFragment<FragmentBpBinding> implement
 
             @Override
             public void onClick(View v) {
+                getBinding().btMeasureBp.setImageResource(!isTest ? R.drawable.ic_stop : R.drawable.ic_play);
 
                 if (!isTest) {
                     isTest=true;
@@ -272,6 +273,7 @@ public class BpFragment extends BaseMeasureFragment<FragmentBpBinding> implement
             bpDeDataList.clear();
             // Reset button text after final result is displayed
            // getBinding().btMeasureBp.setText(getString(R.string.start_measure));
+
             isTest = false; // Reset test flag
             return true;
         }else if (msg.what == MSG_BP_LEAK) {

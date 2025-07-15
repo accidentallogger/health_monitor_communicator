@@ -2,6 +2,7 @@ package com.kl.visionsdkdemo.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -117,6 +118,8 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
 
         // Measure button click listener
         getBinding().btMeasureEcg.setOnClickListener(v -> {
+            getBinding().btMeasureEcg.setImageResource(!isMeasuring ? R.drawable.ic_stop : R.drawable.ic_play);
+
             if (!isMeasuring) {
                 startMeasure();
             } else {
@@ -129,6 +132,7 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
         isMeasuring = true;
         BleManager.getInstance().setEcgResultListener(null);
         BleManager.getInstance().setEcgResultListener(this);
+        handler.postDelayed(() -> getBinding().ecgView.clearDatas(), 500);
 
         ecgFile = createFile("ecg_handle.ecg");
         fosEcg = createFos(ecgFile);
@@ -141,10 +145,11 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
     }
 
     private void stopMeasure() {
+        //saveEcgGraph();
         isMeasuring = false;
         BleManager.getInstance().stopMeasure(MeasureType.TYPE_ECG, this);
         getBinding().tvEcgDuration.setText("00:00");
-        handler.postDelayed(() -> getBinding().ecgView.clearDatas(), 500);
+       // handler.postDelayed(() -> getBinding().ecgView.clearDatas(), 500);
 
         Log.d("ECGFragment", "ECG measurement stopped");
     }
@@ -309,7 +314,22 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
         if (isMeasuring) {
             stopMeasure();
         }
+
         getBinding().ecgView.clearDatas();
         handler.removeCallbacksAndMessages(null);
+    }
+    private void saveEcgGraph() {
+        View chart = getBinding().ecgView;
+        chart.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(chart.getDrawingCache());
+        chart.setDrawingCacheEnabled(false);
+
+        File file = new File(requireContext().getExternalFilesDir(null), "ecg_graph_" + System.currentTimeMillis() + ".png");
+        try (FileOutputStream out = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            Log.d("ECGFragment", "ECG graph saved to: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
