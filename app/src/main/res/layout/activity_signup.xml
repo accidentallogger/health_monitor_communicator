@@ -42,7 +42,7 @@
                 android:textColorHint="#7B9E99">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/Username"
+                    android:id="@+id/Phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
@@ -74,21 +74,44 @@
                     android:padding="16dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Password Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ConfirmPasswordLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="#7B9E99"
+                app:boxStrokeColor="#03C8B9"
+                app:hintTextColor="@color/teal_700"
+                android:textColorHint="#7B9E99">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:textColor="#03C8B9"
+                    android:padding="16dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Login Button -->
             <Button
-                android:id="@+id/LoginBtn"
+                android:id="@+id/SignUpBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:paddingHorizontal="60dp"
-                android:text="Log In"
+                android:text="Sign Up"
                 android:textColor="#FFFFFF"
                 android:backgroundTint="#03C8B9"
                 app:cornerRadius="5dp" />
 
             <TextView
-                android:id="@+id/registerNowText"
+                android:id="@+id/loginNowText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -96,7 +119,7 @@
                 android:layout_gravity="center"
 
                 android:clickable="true"
-                android:text="Don't have an account? Register Now"
+                android:text="Already have an account? Login Now"
                 android:textColor="#03C8B9"
                 android:textStyle="bold" />
 
@@ -104,7 +127,7 @@
     </LinearLayout>
 
     <!-- Opening Image at bottom -->
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/openingImageContainer"
 
         app:layout_constraintBottom_toBottomOf="parent"

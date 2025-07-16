@@ -1,12 +1,23 @@
 package com.kl.visionsdkdemo.fragment;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +26,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -39,7 +56,10 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Objects;
+
+
 
 public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
         implements IBleWriteResponse, IEcgResultListener, ISmctAlgoCallback {
@@ -53,6 +73,89 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private boolean isMeasuring = false;
+
+    private static final int REQUEST_WRITE_STORAGE = 112;
+
+    private void saveEcgGraphToGallery() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            // Android 14+ (API 34+) - No permission needed for MediaStore
+            saveGraphToMediaStore();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Android 13 (API 33) - Only need READ_MEDIA_IMAGES
+            requestSaveWithPermission(Manifest.permission.READ_MEDIA_IMAGES);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Android 11-12 (API 30-32) - No permission needed for MediaStore
+            saveGraphToMediaStore();
+        } else {
+            // Android 10 and below - Use legacy WRITE_EXTERNAL_STORAGE
+            requestSaveWithPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
+    private void requestSaveWithPermission(String permission) {
+        if (ContextCompat.checkSelfPermission(requireContext(), permission)
+                == PackageManager.PERMISSION_GRANTED) {
+            saveGraphToMediaStore();
+        } else {
+            requestPermissionLauncher.launch(permission);
+        }
+    }
+    private ActivityResultLauncher<String> requestPermissionLauncher;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        requestPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        saveGraphToMediaStore();
+                    } else {
+                        showPermissionDeniedMessage();
+                    }
+                });
+    }
+
+    private void saveGraphToMediaStore() {
+        try {
+            Bitmap graphBitmap = getBinding().ecgView.createFullGraphBitmap();
+            saveBitmapToGallery(graphBitmap);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Error saving ECG: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+            Log.e("ECGFragment", "Save error", e);
+        }
+    }
+
+    private void showPermissionDeniedMessage() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Permission Required")
+                .setMessage("This app needs permission to save ECG images to your gallery.")
+                .setPositiveButton("Settings", (d, w) -> openAppSettings())
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void openAppSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", requireContext().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_WRITE_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Bitmap graphBitmap = getBinding().ecgView.createFullGraphBitmap();
+                saveBitmapToGallery(graphBitmap);
+            } else {
+                Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     public static ECGFragment newInstance() {
         Bundle args = new Bundle();
@@ -68,11 +171,13 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
 
     @Override
     protected void initView(View rootView) {
+        getBinding().btnSaveData.setOnClickListener(v -> saveEcgGraphToGallery());
         // Create the spinner adapter with custom styling
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
                 getResources().getStringArray(R.array.ecg_gain)
+
         ) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -89,6 +194,8 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
                 textView.setBackgroundColor(Color.WHITE);  // Dropdown items background
                 return view;
             }
+
+
         };
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -330,6 +437,59 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
             Log.d("ECGFragment", "ECG graph saved to: " + file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private void saveBitmapToGallery(Bitmap bitmap) {
+        String fileName = "ECG_" + System.currentTimeMillis() + ".png";
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/ECG_Records");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.IS_PENDING, 1);
+        }
+
+        ContentResolver resolver = requireContext().getContentResolver();
+        Uri uri = null;
+
+        try {
+            uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            if (uri == null) {
+                throw new IOException("Failed to create new MediaStore record");
+            }
+
+            try (OutputStream out = resolver.openOutputStream(uri)) {
+                if (out == null) {
+                    throw new IOException("Failed to open output stream");
+                }
+                if (!bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)) {
+                    throw new IOException("Failed to compress bitmap");
+                }
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.clear();
+                values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                resolver.update(uri, values, null, null);
+            }
+
+            // Notify gallery
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(uri);
+            requireContext().sendBroadcast(mediaScanIntent);
+
+            Toast.makeText(getContext(), "ECG saved to Gallery/ECG_Records", Toast.LENGTH_LONG).show();
+
+        } catch (IOException e) {
+            if (uri != null) {
+                resolver.delete(uri, null, null);
+            }
+            Toast.makeText(getContext(), "Failed to save ECG: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+            Log.e("ECGFragment", "Save error", e);
         }
     }
 }
