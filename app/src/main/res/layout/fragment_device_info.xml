@@ -214,5 +214,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/logout"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="Logout"
+        app:srcCompat="@drawable/ic_logout"
+        app:tint="@color/white"
+        app:backgroundTint="@color/button_background_tint"
+        app:rippleColor="#AAFFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btDisconnect"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="120dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="Logout"
+        app:srcCompat="@drawable/ic_bluetooth_off"
+
+        app:tint="@color/white"
+        app:backgroundTint="@color/button_background_tint"
+        app:rippleColor="#AAFFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

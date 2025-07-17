@@ -2,6 +2,8 @@ package com.kl.visionsdkdemo.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
+import static com.kongzue.dialogx.interfaces.BaseDialog.getContext;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
@@ -23,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.kl.visionsdkdemo.CodeScanActivity;
 import com.kl.visionsdkdemo.MeasureActivity;
 import com.kl.visionsdkdemo.R;
+import com.kl.visionsdkdemo.SessionManager;
 import com.kl.visionsdkdemo.base.App;
 import com.kl.visionsdkdemo.base.BaseVBindingFragment;
 import com.kl.visionsdkdemo.base.utils.PackageUtil;
@@ -88,6 +92,40 @@ public class SettingsFragment extends BaseVBindingFragment<FragmentDeviceInfoBin
                 }
             }
         });
+
+        getBinding().logout.setOnClickListener(v->{
+
+            SessionManager sm = new SessionManager(getContext());
+            sm.logoutUser(getContext());
+        });
+// Add this in your initView() method of SettingsFragment
+        getBinding().btDisconnect.setOnClickListener(v -> {
+            if (BleManager.getInstance().isConnected()) {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.confirm_disconnect)
+                        .setMessage(R.string.confirm_disconnect_message)
+                        .setPositiveButton(R.string.yes, (dialog, which) -> {
+                            // Disconnect Bluetooth
+                            BleManager.getInstance().disconnect();
+
+                            // Navigate back to previous screen
+                            if (isAdded() && !requireActivity().isFinishing()) {
+                                requireActivity().onBackPressed();
+                            }
+
+                            Toast.makeText(requireContext(),
+                                    R.string.device_disconnected,
+                                    Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton(R.string.no, null)
+                        .show();
+            } else {
+                Toast.makeText(requireContext(),
+                        R.string.no_device_connected,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
         progressDialog = new ProgressDialog(requireContext());
         progressDialog.setTitle(getString(R.string.firmware_upgrade));
         progressDialog.setMessage("Loading...");
@@ -127,6 +165,8 @@ public class SettingsFragment extends BaseVBindingFragment<FragmentDeviceInfoBin
             }
         });
         getBinding().tvAppVision.setText("App number："+PackageUtil.getVersionName(requireContext()));
+
+
     }
 
     @Override
@@ -237,8 +277,11 @@ public class SettingsFragment extends BaseVBindingFragment<FragmentDeviceInfoBin
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         DfuServiceListenerHelper.registerProgressListener(requireContext(),this);
+
+
     }
 
     @Override

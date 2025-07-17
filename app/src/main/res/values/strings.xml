@@ -1,4 +1,13 @@
 <resources>
+
+    <string name="want_disconnect">Do you want to disconnect from the device?</string>
+    <string name="confirm_disconnect" translatable="false">Disconnect Device</string>
+    <string name="confirm_disconnect_message" translatable="false">Are you sure you want to disconnect from the device?</string>
+    <string name="yes" translatable="false">Yes</string>
+    <string name="no" translatable="false">No</string>
+    <string name="device_disconnected" translatable="false">Device disconnected</string>
+    <string name="no_device_connected" translatable="false">No device connected</string>
+    <string name="cancel" translatable="false">Cancel</string>
     <string name="app_name">VisionSDK</string>
     <string name="manufacturer_bene_check">百捷（Bene Check）</string>
     <string name="manufacturer_hmd">HMD生物医学（HMD BioMedical Inc.）</string>
@@ -29,7 +38,7 @@
     <string name="share">Share</string>
     <string name="select_file_to_share">Select file to share</string>
     <string name="hint">hint!</string>
-    <string name="want_disconnect">Do you want to disconnect the Bluetooth connection?</string>
+
     <string name="confirm">confirm</string>
     <string name="cancle">cancel</string>
     <string name="bluetooth_disconnected">bluetooth disconnected</string>
@@ -75,5 +84,7 @@
     <string name="update_fail">update failed</string>
     <string name="select_firmware_upgrade_package">Select firmware upgrade package</string>
     <string name="please_enter_the_serial_number">Please enter the serial number</string>
+
+
 
 </resources>

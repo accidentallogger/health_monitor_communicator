@@ -2,6 +2,7 @@ package com.kl.visionsdkdemo;
 
 import static com.kongzue.dialogx.interfaces.BaseDialog.getContext;
 
+import com.kl.visionsdkdemo.SessionManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
@@ -122,6 +123,11 @@ public class MainActivity extends BaseVBindingActivity<ActivityMainBinding> impl
             startScan();
         });
 
+        getBinding().logout.setOnClickListener(v->{
+            SessionManager sm = new SessionManager(getContext());
+            sm.logoutUser(this);
+        });
+
         getBinding().swipeRefreshLayout.setOnRefreshListener(() -> {
             if (!isScanning) {
                 startScan();
@@ -193,6 +199,7 @@ public class MainActivity extends BaseVBindingActivity<ActivityMainBinding> impl
                         startActivity(new Intent(MainActivity.this, MeasureActivity.class));
                     }
                 });
+
     }
 
     @Override
@@ -202,7 +209,23 @@ public class MainActivity extends BaseVBindingActivity<ActivityMainBinding> impl
 
     @Override
     public void onDisconnected(String mac, boolean isActiveDisconnect) {
-        // Handle disconnection if needed
+        runOnUiThread(() -> {
+            if (isActiveDisconnect) {
+                // User-initiated disconnect
+                Toast.makeText(this,
+                        R.string.device_disconnected,
+                        Toast.LENGTH_SHORT).show();
+
+                // Navigate back
+                if (!isFinishing()) {
+                    onBackPressed();
+                }
+            } else {
+                // Automatic disconnect
+                TipDialog.show(getString(R.string.device_disconnected),
+                        TipDialog.TYPE.WARNING);
+            }
+        });
     }
 
     @Override

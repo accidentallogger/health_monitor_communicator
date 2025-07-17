@@ -214,8 +214,10 @@ public class Spo2Fragment extends BaseMeasureFragment<FragmentBoBinding>
         LogUtils.e("Spo2Fragment", "onSpo2End");
         closeFile();
         isMeasureEnd = true;
+
         mHandler.postDelayed(() -> {
             if (getBinding() != null) {
+                getBinding().btMeasureBo.setImageResource(R.drawable.ic_play);
                 isMeasuring = false; // reset flag
                 oxWave.clear();
             }

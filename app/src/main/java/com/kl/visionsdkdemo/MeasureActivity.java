@@ -1,5 +1,7 @@
 package com.kl.visionsdkdemo;
 
+import static com.kongzue.dialogx.interfaces.BaseDialog.getContext;
+
 import android.bluetooth.BluetoothGattService;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -39,6 +41,7 @@ public class MeasureActivity extends BaseVBindingActivity<ActivityMeasureBinding
         }
         initView();
         setupBottomNavigation();
+
     }
 
     @Override

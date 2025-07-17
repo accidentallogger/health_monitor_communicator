@@ -259,7 +259,8 @@
                 android:textStyle="bold" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+
+                android:layout_width="330dp"
                 android:layout_height="20dp"
                 android:background="@drawable/bp_indicator_background_sys">
 
@@ -325,7 +326,7 @@
                 android:textStyle="bold" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="330dp"
                 android:layout_height="20dp"
                 android:background="@drawable/bp_indicator_background_dias">
 
@@ -382,7 +383,7 @@
                 android:textStyle="bold" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="330dp"
                 android:layout_height="20dp"
                 android:background="@drawable/hr_indicator_background">
 

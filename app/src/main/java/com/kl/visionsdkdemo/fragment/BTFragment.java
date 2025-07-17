@@ -115,6 +115,8 @@ public class BTFragment extends BaseVBindingFragment<FragmentBtBinding>
             public void run() {
                 if (getBinding() != null) {
                     getBinding().tvBt.setText(0+" ℃");
+
+
                     isCheckModel=false;
                     //getBinding().btMeasureBt.setText(getString(R.string.start_measure));
                 }
@@ -132,6 +134,7 @@ public class BTFragment extends BaseVBindingFragment<FragmentBtBinding>
             @Override
             public void run() {
                 getBinding().tvBt.setText(temperature+" ℃");
+                getBinding().btMeasureBt.setImageResource(R.drawable.ic_play);
                 //getBinding().btMeasureBt.setText(getString(R.string.start_measure));
                 isCheckModel=false;
             }

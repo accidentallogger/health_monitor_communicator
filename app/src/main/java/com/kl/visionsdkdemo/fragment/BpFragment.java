@@ -263,7 +263,7 @@ public class BpFragment extends BaseMeasureFragment<FragmentBpBinding> implement
             Log.e("Value", "Final diastolic: " + diastolic + " / mmHg");
             Log.e("Value", "Final hr: " + hr + " / BPM");
             Log.e("Value", "bpDeDataList size: " + bpDeDataList.size()+"");
-
+            getBinding().btMeasureBp.setImageResource(R.drawable.ic_play);
             SharedPreferences sharedPreferences = requireContext().getSharedPreferences("VisionSDK", Context.MODE_PRIVATE);
             String savedDeviceName = sharedPreferences.getString("savedDeviceName", null);
             Log.d("", "savedDeviceName_Bp: " + savedDeviceName);
