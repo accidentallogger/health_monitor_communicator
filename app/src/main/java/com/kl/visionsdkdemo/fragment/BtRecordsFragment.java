@@ -1,5 +1,6 @@
 package com.kl.visionsdkdemo.fragment;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kl.visionsdkdemo.R;
 import com.kl.visionsdkdemo.SessionManager;
-import com.kl.visionsdkdemo.adapter.Spo2RecordsAdapter;
+import com.kl.visionsdkdemo.adapter.BtRecordsAdapter;
 import com.kl.visionsdkdemo.db.DatabaseHelper;
-import com.kl.visionsdkdemo.model.Spo2Record;
+import com.kl.visionsdkdemo.model.BtRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Spo2RecordsFragment extends Fragment {
+public class BtRecordsFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView tvEmpty;
-    private Spo2RecordsAdapter adapter;
+    private BtRecordsAdapter adapter;
     private DatabaseHelper databaseHelper;
     private SessionManager sessionManager;
     private int userId = -1;
@@ -35,7 +36,7 @@ public class Spo2RecordsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_spo2_records, container, false);
+        return inflater.inflate(R.layout.fragment_bt_records, container, false);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class Spo2RecordsFragment extends Fragment {
         tvEmpty = view.findViewById(R.id.tv_empty);
 
         // Initialize RecyclerView with empty list first
-        adapter = new Spo2RecordsAdapter(new ArrayList<>(), databaseHelper, userId);
+        adapter = new BtRecordsAdapter(new ArrayList<>(), databaseHelper, userId);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
@@ -66,7 +67,7 @@ public class Spo2RecordsFragment extends Fragment {
             return;
         }
 
-        List<Spo2Record> records = databaseHelper.getSpo2RecordsAsList(userId);
+        List<BtRecord> records = databaseHelper.getBtRecordsAsList(userId);
         if (records.isEmpty()) {
             showEmptyState();
         } else {
@@ -77,10 +78,10 @@ public class Spo2RecordsFragment extends Fragment {
     private void showEmptyState() {
         recyclerView.setVisibility(View.GONE);
         tvEmpty.setVisibility(View.VISIBLE);
-        tvEmpty.setText("No SPO2 records found");
+        tvEmpty.setText("No temperature records found");
     }
 
-    private void showRecords(List<Spo2Record> records) {
+    private void showRecords(List<BtRecord> records) {
         recyclerView.setVisibility(View.VISIBLE);
         tvEmpty.setVisibility(View.GONE);
         adapter.updateData(records, userId);

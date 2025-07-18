@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.kl.visionsdkdemo.R;
+import com.kl.visionsdkdemo.SessionManager;
 import com.kl.visionsdkdemo.databinding.FragmentBoBinding;
+import com.kl.visionsdkdemo.db.DatabaseHelper;
 import com.kl.visionsdkdemo.fragment.BaseMeasureFragment;
 import com.kl.visionsdkdemo.view.PPGDrawWave;
 import com.mintti.visionsdk.ble.BleManager;
@@ -34,10 +37,16 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
 
 public class Spo2Fragment extends BaseMeasureFragment<FragmentBoBinding>
         implements IBleWriteResponse, ISpo2ResultListener, Handler.Callback, IRawSpo2DataCallback {
-
+    private DatabaseHelper databaseHelper;
+    private SessionManager sessionManager;
     private static final int MSG_SPO = 0;
     private static final int MSG_HR = 1;
 
@@ -58,6 +67,12 @@ public class Spo2Fragment extends BaseMeasureFragment<FragmentBoBinding>
         fragment.setArguments(args);
         return fragment;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        databaseHelper = new DatabaseHelper(requireContext());
+        sessionManager = new SessionManager(requireContext());
+    }
 
     @Override
     protected FragmentBoBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
@@ -76,6 +91,49 @@ public class Spo2Fragment extends BaseMeasureFragment<FragmentBoBinding>
         getBinding().btMeasureBo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                getBinding().btnSaveRecord.setOnClickListener(v2 -> {
+                    String spo2Text = getBinding().tvSpo2.getText().toString();
+                    String hrText = getBinding().tvHr.getText().toString();
+
+                    if (!spo2Text.equals("-- %") && !hrText.equals("000 bpm")) {
+                        try {
+                            double spo2 = Double.parseDouble(spo2Text.replace(" %", ""));
+                            int hr = Integer.parseInt(hrText.replace(" bpm", ""));
+
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                            String currentDate = dateFormat.format(new Date());
+                            String currentTime = timeFormat.format(new Date());
+
+                            // Get user ID from session
+                            String phone = sessionManager.getLoggedInPhone();
+                            if (phone != null) {
+                                int userId = databaseHelper.getUserId(phone);
+                                if (userId != -1) {
+                                    long id = databaseHelper.addSpo2Record(
+                                            userId,
+                                            spo2,
+                                            hr,
+                                            currentDate,
+                                            currentTime,
+                                            "SPO2 Measurement"
+                                    );
+
+                                    if (id != -1) {
+                                        Toast.makeText(requireContext(), "Record saved successfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(requireContext(), "Failed to save record", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(requireContext(), "Invalid measurement values", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "No measurement to save", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 getBinding().btMeasureBo.setImageResource(!isMeasuring ? R.drawable.ic_stop : R.drawable.ic_play);
 
                 if (!isMeasuring) {

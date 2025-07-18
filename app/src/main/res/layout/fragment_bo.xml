@@ -139,5 +139,15 @@
         app:tint="@color/white"
         tools:layout_editor_absoluteX="309dp" />
 
-
+    <!-- Add this near your measure button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Save Record"
+        app:backgroundTint="@color/button_background_tint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/white"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

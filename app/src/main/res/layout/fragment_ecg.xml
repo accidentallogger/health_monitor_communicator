@@ -385,12 +385,14 @@
         android:id="@+id/btn_save_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:strokeColor="@color/button_background_tint"
         android:layout_marginStart="16dp"
         android:text="Print Graph"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ecg_view_container"/>
     <com.google.android.material.button.MaterialButton
+        app:strokeColor="@color/button_background_tint"
         android:id="@+id/btnSaveToDb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
