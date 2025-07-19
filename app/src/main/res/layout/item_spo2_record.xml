@@ -30,7 +30,7 @@
                 >
 
                 <TextView
-                android:textColor="@color/black"
+                    android:textColor="@color/cyan_primary"
                     android:id="@+id/tv_spo2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:textColor="@color/black"
+                    android:textColor="@color/cyan_primary"
                     android:id="@+id/tv_hr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

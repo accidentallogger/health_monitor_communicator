@@ -18,5 +18,6 @@
         android:gravity="center"
         android:text="No records found"
         android:visibility="gone"
+        android:textSize="16sp"
         android:textColor="@color/black"/>
 </FrameLayout>

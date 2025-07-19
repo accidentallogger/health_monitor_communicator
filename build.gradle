@@ -15,6 +15,7 @@ buildscript {
     }
 }
 
+
 ext {
     compileSdkVersion = 34
 }

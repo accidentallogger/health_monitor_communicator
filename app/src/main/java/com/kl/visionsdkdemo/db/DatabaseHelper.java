@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.kl.visionsdkdemo.model.BpRecord;
 import com.kl.visionsdkdemo.model.BtRecord;
+import com.kl.visionsdkdemo.model.EcgRecord;
 import com.kl.visionsdkdemo.model.Spo2Record;
 
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ import java.util.Locale;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserManager.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // User table
     private static final String TABLE_USER = "users";
@@ -39,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NOTES = "notes";
 
 
-    // Create table SQL
+    // table SQL
     private static final String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_USER_PHONE + " TEXT UNIQUE NOT NULL,"
@@ -70,6 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_BT_RECORDS_TABLE);
         db.execSQL(CREATE_SPO2_RECORDS_TABLE);
         db.execSQL(CREATE_BP_RECORDS_TABLE);
+        db.execSQL(CREATE_ECG_RECORDS_TABLE);
 
     }
 
@@ -95,15 +97,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.close();
         }
         return id;
-    }
-    public Cursor getBtRecords(int userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(TABLE_BT_RECORDS,
-                new String[]{COLUMN_RECORD_ID, COLUMN_BT_VALUE, COLUMN_RECORD_DATE, COLUMN_RECORD_TIME, COLUMN_NOTES},
-                COLUMN_RECORD_USER_ID + "=?",
-                new String[]{String.valueOf(userId)},
-                null, null,
-                COLUMN_RECORD_DATE + " DESC, " + COLUMN_RECORD_TIME + " DESC");
     }
 
     public int getUserId(String phone) {
@@ -140,14 +133,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BT_RECORDS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPO2_RECORDS);  // Add this line
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPO2_RECORDS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BP_RECORDS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ECG_RECORDS);
 
-        // Recreate them
         onCreate(db);
     }
 
-    public boolean isDatabaseValid() {
+    /*public boolean isDatabaseValid() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT name FROM sqlite_master WHERE type='table' AND name IN(?,?)",
@@ -158,7 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return tableCount == 2; // Both tables should exist
-    }
+    }*/
     public boolean updateBtRecordNotes(int userId, String date, String time, String newNotes) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -208,7 +201,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
-    public boolean validateDatabase() {
+    /*public boolean validateDatabase() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
 
@@ -226,7 +219,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return usersTableExists && btTableExists;
-    }
+    }*/
     public boolean checkUserExists(String phone) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {COLUMN_USER_PHONE};
@@ -241,7 +234,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return count > 0;
     }
-    // Add new user
+
+
+    // User management
     public void addUser(String phone, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -252,7 +247,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Check if user exists
     public boolean checkUser(String phone, String password) {
         String[] columns = {COLUMN_USER_ID};
         SQLiteDatabase db = this.getReadableDatabase();
@@ -268,14 +262,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
-
-
-    // Add these constants to your DatabaseHelper class
+    //SPO2
     private static final String TABLE_SPO2_RECORDS = "spo2_records";
     private static final String COLUMN_SPO2_VALUE = "spo2_value";
     private static final String COLUMN_HR_VALUE = "hr_value";
 
-    // Add this to your onCreate method
     private static final String CREATE_SPO2_RECORDS_TABLE = "CREATE TABLE " + TABLE_SPO2_RECORDS + "("
             + COLUMN_RECORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_RECORD_USER_ID + " INTEGER NOT NULL,"
@@ -288,8 +279,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ")";
 
 
-
-//SPO2
     public long addSpo2Record(int userId, double spo2, int heartRate, String date, String time, String notes) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -367,7 +356,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    // Add methods for BP records
     public long addBpRecord(int userId, int systolic, int diastolic, int heartRate, String date, String time, String notes) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -388,7 +376,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<BpRecord> records = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_BP_RECORDS,
-                new String[]{COLUMN_SYSTOLIC, COLUMN_DIASTOLIC, COLUMN_HR_VALUE_BP,
+                new String[]{COLUMN_RECORD_ID, COLUMN_SYSTOLIC, COLUMN_DIASTOLIC, COLUMN_HR_VALUE_BP,
                         COLUMN_RECORD_DATE, COLUMN_RECORD_TIME, COLUMN_NOTES},
                 COLUMN_RECORD_USER_ID + "=?",
                 new String[]{String.valueOf(userId)},
@@ -397,6 +385,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
+                int recordId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RECORD_ID));
                 int systolic = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_SYSTOLIC));
                 int diastolic = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_DIASTOLIC));
                 int hr = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HR_VALUE_BP));
@@ -404,7 +393,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String time = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECORD_TIME));
                 String notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES));
 
-                records.add(new BpRecord(systolic, diastolic, hr, date, time, notes));
+                records.add(new BpRecord(recordId, systolic, diastolic, hr, date, time, notes));
             } while (cursor.moveToNext());
             cursor.close();
         }
@@ -412,22 +401,172 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return records;
     }
 
-    public boolean updateBpRecordNotes(int userId, String date, String time, String newNotes) {
+    public boolean updateBpRecordNotes(int recordId, String newNotes) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTES, newNotes);
 
-        int rowsAffected = db.update(TABLE_BP_RECORDS, values,
-                COLUMN_RECORD_USER_ID + "=? AND " +
-                        COLUMN_RECORD_DATE + "=? AND " +
-                        COLUMN_RECORD_TIME + "=?",
-                new String[]{String.valueOf(userId), date, time});
+        int rowsAffected = db.update(TABLE_BP_RECORDS,
+                values,
+                COLUMN_RECORD_ID + "=?",
+                new String[]{String.valueOf(recordId)});
 
         db.close();
         return rowsAffected > 0;
     }
 
 
+    //ECG
+
+    private static final String TABLE_ECG_RECORDS = "ecg_records";
+    private static final String COLUMN_AVG_HR = "avg_hr";
+    private static final String COLUMN_RESP_RATE = "resp_rate";
+    private static final String COLUMN_RR_MAX = "rr_max";
+    private static final String COLUMN_RR_MIN = "rr_min";
+    private static final String COLUMN_HRV = "hrv";
+    private static final String COLUMN_ECG_DURATION = "ecg_duration";
+    private static final String COLUMN_ECG_DATA = "ecg_data";
+    private static final String CREATE_ECG_RECORDS_TABLE = "CREATE TABLE " + TABLE_ECG_RECORDS + "("
+            + COLUMN_RECORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_RECORD_USER_ID + " INTEGER NOT NULL,"
+            + COLUMN_AVG_HR + " INTEGER NOT NULL,"
+            + COLUMN_RESP_RATE + " INTEGER,"
+            + COLUMN_RR_MAX + " INTEGER NOT NULL,"
+            + COLUMN_RR_MIN + " INTEGER NOT NULL,"
+            + COLUMN_HRV + " INTEGER NOT NULL,"
+            + COLUMN_ECG_DURATION + " TEXT NOT NULL,"
+            + COLUMN_ECG_DATA + " TEXT NOT NULL," // Store ECG waveform data as JSON
+            + COLUMN_RECORD_DATE + " TEXT NOT NULL,"
+            + COLUMN_RECORD_TIME + " TEXT NOT NULL,"
+            + COLUMN_NOTES + " TEXT,"
+            + "FOREIGN KEY(" + COLUMN_RECORD_USER_ID + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + ")"
+            + ")";
+    public long addEcgRecord(int userId, int avgHr, Integer respRate, int rrMax, int rrMin,
+                             int hrv, String duration, String ecgData,
+                             String date, String time, String notes) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long id = -1;
+        try {
+            db.beginTransaction();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_RECORD_USER_ID, userId);
+            values.put(COLUMN_AVG_HR, avgHr);
+            values.put(COLUMN_RESP_RATE, respRate);
+            values.put(COLUMN_RR_MAX, rrMax);
+            values.put(COLUMN_RR_MIN, rrMin);
+            values.put(COLUMN_HRV, hrv);
+            values.put(COLUMN_ECG_DURATION, duration);
+            values.put(COLUMN_ECG_DATA, ecgData);
+            values.put(COLUMN_RECORD_DATE, date);
+            values.put(COLUMN_RECORD_TIME, time);
+            values.put(COLUMN_NOTES, notes);
+
+            id = db.insert(TABLE_ECG_RECORDS, null, values);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error adding ECG record", e);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return id;
+    }
+
+    public List<EcgRecord> getEcgRecordsAsList(int userId) {
+        List<EcgRecord> records = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(TABLE_ECG_RECORDS,
+                    new String[]{COLUMN_RECORD_ID, COLUMN_AVG_HR, COLUMN_RESP_RATE,
+                            COLUMN_RR_MAX, COLUMN_RR_MIN, COLUMN_HRV,
+                            COLUMN_ECG_DURATION, COLUMN_ECG_DATA,
+                            COLUMN_RECORD_DATE, COLUMN_RECORD_TIME, COLUMN_NOTES},
+                    COLUMN_RECORD_USER_ID + "=?",
+                    new String[]{String.valueOf(userId)},
+                    null, null,
+                    COLUMN_RECORD_DATE + " DESC, " + COLUMN_RECORD_TIME + " DESC");
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RECORD_ID));
+                    int avgHr = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_AVG_HR));
+                    int respRate = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESP_RATE));
+                    int rrMax = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RR_MAX));
+                    int rrMin = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RR_MIN));
+                    int hrv = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HRV));
+                    String duration = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ECG_DURATION));
+                    String ecgData = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ECG_DATA));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECORD_DATE));
+                    String time = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECORD_TIME));
+                    String notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES));
+
+                    records.add(new EcgRecord(id, avgHr, respRate, rrMax, rrMin, hrv,
+                            duration, ecgData, date, time, notes));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return records;
+    }
+
+    public boolean updateEcgRecordNotes(int recordId, String newNotes) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTES, newNotes);
+
+        int rowsAffected = db.update(TABLE_ECG_RECORDS, values,
+                COLUMN_RECORD_ID + "=?",
+                new String[]{String.valueOf(recordId)});
+
+        db.close();
+        return rowsAffected > 0;
+    }
+    public EcgRecord getEcgRecordById(int userId, int recordId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        EcgRecord record = null;
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(TABLE_ECG_RECORDS,
+                    new String[]{COLUMN_RECORD_ID, COLUMN_AVG_HR, COLUMN_RESP_RATE,
+                            COLUMN_RR_MAX, COLUMN_RR_MIN, COLUMN_HRV,
+                            COLUMN_ECG_DURATION, COLUMN_ECG_DATA,
+                            COLUMN_RECORD_DATE, COLUMN_RECORD_TIME, COLUMN_NOTES},
+                    COLUMN_RECORD_USER_ID + "=? AND " + COLUMN_RECORD_ID + "=?",
+                    new String[]{String.valueOf(userId), String.valueOf(recordId)},
+                    null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RECORD_ID));
+                int avgHr = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_AVG_HR));
+                Integer respRate = cursor.isNull(cursor.getColumnIndexOrThrow(COLUMN_RESP_RATE)) ?
+                        null : cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESP_RATE));
+                int rrMax = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RR_MAX));
+                int rrMin = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RR_MIN));
+                int hrv = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HRV));
+                String duration = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ECG_DURATION));
+                String ecgData = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ECG_DATA));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECORD_DATE));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RECORD_TIME));
+                String notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES));
+
+                record = new EcgRecord(id, avgHr, respRate, rrMax, rrMin, hrv,
+                        duration, ecgData, date, time, notes);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return record;
+    }
 }
 
 

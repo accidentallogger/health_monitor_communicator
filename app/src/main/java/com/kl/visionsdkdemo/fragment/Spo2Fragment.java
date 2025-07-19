@@ -22,7 +22,6 @@ import com.kl.visionsdkdemo.R;
 import com.kl.visionsdkdemo.SessionManager;
 import com.kl.visionsdkdemo.databinding.FragmentBoBinding;
 import com.kl.visionsdkdemo.db.DatabaseHelper;
-import com.kl.visionsdkdemo.fragment.BaseMeasureFragment;
 import com.kl.visionsdkdemo.view.PPGDrawWave;
 import com.mintti.visionsdk.ble.BleManager;
 import com.mintti.visionsdk.ble.bean.MeasureType;
@@ -106,7 +105,7 @@ public class Spo2Fragment extends BaseMeasureFragment<FragmentBoBinding>
                             String currentDate = dateFormat.format(new Date());
                             String currentTime = timeFormat.format(new Date());
 
-                            // Get user ID from session
+
                             String phone = sessionManager.getLoggedInPhone();
                             if (phone != null) {
                                 int userId = databaseHelper.getUserId(phone);

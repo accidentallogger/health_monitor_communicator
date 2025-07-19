@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
-        <!-- Heart Rate Value (inside circle, below SPO2) -->
+
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             />
 
     </LinearLayout>
-    <!-- Circular Progress Bar Container -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/circularProgressBarCard"
         android:layout_width="250dp"
@@ -42,14 +42,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/materialCardView"
-        app:layout_constraintVertical_bias="0.4"> <!-- Adjust bias to center it vertically -->
-
+        app:layout_constraintVertical_bias="0.4">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/circular_progress_bar_background">
 
-            <!-- Circular ProgressBar -->
+
             <ProgressBar
 
                 android:id="@+id/circularProgressBar"
@@ -66,7 +65,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- Blood Oxygen Value (inside circle) -->
             <TextView
                 android:id="@+id/tvSpo2"
                 android:layout_width="wrap_content"
@@ -80,9 +78,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tvHr"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
-
-            <!-- Heart Rate Value (inside circle, below SPO2) -->
-            <TextView
+   <TextView
                 android:id="@+id/tvHr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,7 +95,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Graph Card (at the bottom, end to end) -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
         android:layout_width="0dp"
@@ -113,17 +109,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circularProgressBarCard"
-        > <!-- Ensures it sticks to the bottom -->
-        <!-- Original WaveSurfaceView re-added -->
+        >
         <com.kl.visionsdkdemo.view.WaveSurfaceView
             android:id="@+id/bo_wave_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white" /> <!-- Keeping the cyan background -->
+            android:background="@color/white" />
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Start Measure Button (circular, bottom right) -->
-    <!-- Circular BO Measure Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/bt_measure_bo"
         android:layout_width="wrap_content"
@@ -139,7 +132,6 @@
         app:tint="@color/white"
         tools:layout_editor_absoluteX="309dp" />
 
-    <!-- Add this near your measure button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save_record"
         android:layout_width="wrap_content"

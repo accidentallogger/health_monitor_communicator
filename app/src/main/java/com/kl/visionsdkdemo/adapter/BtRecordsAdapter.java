@@ -45,12 +45,10 @@ public class BtRecordsAdapter extends RecyclerView.Adapter<BtRecordsAdapter.View
         BtRecord record = recordList.get(position);
         double temperature = record.getTemperature();
 
-        // Set temperature text
         holder.tvTemperature.setText(String.format("%.1f ℃", temperature));
         holder.tvDateTime.setText(record.getDate() + " " + record.getTime());
         holder.tvNotes.setText(record.getNotes());
 
-        // Set card color based on temperature
         int colorResId;
         if (temperature < 36.0) {
             colorResId = R.color.yellow;
@@ -61,7 +59,6 @@ public class BtRecordsAdapter extends RecyclerView.Adapter<BtRecordsAdapter.View
         }
         holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context, colorResId));
 
-        // Set click listener for edit button
         holder.editButton.setOnClickListener(v -> showEditDialog(record, position));
     }
 
@@ -89,7 +86,6 @@ public class BtRecordsAdapter extends RecyclerView.Adapter<BtRecordsAdapter.View
     }
 
     private void updateRecordNotes(BtRecord record, String newNotes, int position) {
-        // Update in database
         boolean success = databaseHelper.updateBtRecordNotes(
                 userId,
                 record.getDate(),
@@ -98,7 +94,6 @@ public class BtRecordsAdapter extends RecyclerView.Adapter<BtRecordsAdapter.View
         );
 
         if (success) {
-            // Update in local list
             record.setNotes(newNotes);
             notifyItemChanged(position);
             Toast.makeText(context, "Notes updated", Toast.LENGTH_SHORT).show();

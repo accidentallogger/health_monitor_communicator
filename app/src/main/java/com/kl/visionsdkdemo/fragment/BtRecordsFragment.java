@@ -45,12 +45,12 @@ public class BtRecordsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         tvEmpty = view.findViewById(R.id.tv_empty);
 
-        // Initialize RecyclerView with empty list first
+
         adapter = new BtRecordsAdapter(new ArrayList<>(), databaseHelper, userId);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
-        // Load data
+
         loadRecords();
     }
 

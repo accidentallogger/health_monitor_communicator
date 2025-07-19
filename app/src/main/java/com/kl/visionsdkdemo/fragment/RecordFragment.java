@@ -12,7 +12,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.kl.visionsdkdemo.R;
 import com.kl.visionsdkdemo.adapter.RecordsPagerAdapter;
-
 public class RecordFragment extends Fragment {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
@@ -30,6 +29,7 @@ public class RecordFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         tabLayout = view.findViewById(R.id.tabLayout);
 
+        // Use getChildFragmentManager() for nested fragments
         RecordsPagerAdapter adapter = new RecordsPagerAdapter(getChildFragmentManager(), getLifecycle());
         viewPager.setAdapter(adapter);
 

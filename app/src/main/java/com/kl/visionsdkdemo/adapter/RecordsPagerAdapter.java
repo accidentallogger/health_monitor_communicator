@@ -11,7 +11,6 @@ import com.kl.visionsdkdemo.fragment.EcgRecordsFragment;
 import com.kl.visionsdkdemo.fragment.Spo2RecordsFragment;
 
 public class RecordsPagerAdapter extends FragmentStateAdapter {
-
     public RecordsPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }
@@ -24,7 +23,7 @@ public class RecordsPagerAdapter extends FragmentStateAdapter {
             case 1: return new Spo2RecordsFragment();
             case 2: return new BpRecordsFragment();
             case 3: return new BtRecordsFragment();
-            default: return new EcgRecordsFragment();
+            default: throw new IllegalArgumentException("Invalid position");
         }
     }
 

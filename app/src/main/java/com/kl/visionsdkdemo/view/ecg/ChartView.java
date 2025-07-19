@@ -62,10 +62,8 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private float xS;
     private boolean isClearData = false;
 
-    // Scrolling and zooming variables
     private float mTotalWidth = 0;
     private float mViewportLeft = 0;
-    // Add this new field
     private boolean mIsManualScrolling = false;
     private float mViewportWidth;
     private boolean mAutoScroll = true;
@@ -98,8 +96,6 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         setFocusable(true);
         setFocusableInTouchMode(true);
         setKeepScreenOn(true);
-
-        // Initialize paints
         linePaint = new Paint();
         linePaint.setStrokeWidth(5f);
         linePaint.setStyle(Paint.Style.STROKE);
@@ -117,16 +113,12 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         mTextPaint.setTextSize(24f);
         mTextPaint.setAntiAlias(true);
 
-        // Initialize data structures
         datas = new ArrayList<PointF>();
         nativeDatas = new ArrayList<>();
 
-        // Initialize gesture detectors
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
 
 
-
-        // Modify the touch listener
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -151,7 +143,6 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         mIsManualScrolling = false;
-                        // Only auto-scroll if we're near the end
                         if (mViewportLeft >= mTotalWidth - mViewportWidth / mScaleFactor * 1.5f) {
                             mAutoScroll = true;
                         }
@@ -175,7 +166,6 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        // No changes needed here
     }
 
     @Override
@@ -189,8 +179,6 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         final float dataPerLattice = sampleRate / (25.0f * pagerSpeed);
         allDataSize = (int) (totalLattices * dataPerLattice);
         dataSpacing = xS / dataPerLattice;
-
-        // Auto-adjust scale when view size changes
         if (isGraphCutOff()) {
             float requiredScale = mViewportWidth / mTotalWidth;
             mScaleFactor = Math.max(mMinScaleFactor, Math.min(requiredScale, mMaxScaleFactor));
@@ -250,19 +238,15 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         try {
             mCanvas = mHolder.lockCanvas();
             if (mCanvas != null) {
-                // Clear canvas
+
                 mCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                 mCanvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
 
-                // Draw grid if enabled
                 if (mShowGrid) {
                     drawGrid(mCanvas);
                 }
-
-                // Draw ECG line
                 drawLine();
 
-                // Draw time indicators if needed
                 drawTimeIndicators(mCanvas);
             }
         } catch (Exception e) {
@@ -275,14 +259,11 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
     }
 
     private void drawGrid(Canvas canvas) {
-        // Draw horizontal grid lines
         float gridSpacing = mViewHalfHeight / 5;
         for (int i = 0; i <= 10; i++) {
             float y = i * gridSpacing;
             canvas.drawLine(0, y, mViewWidth, y, mGridPaint);
         }
-
-        // Draw vertical grid lines (1 second markers)
         float secondsSpacing = sampleRate * dataSpacing;
         float startX = -mViewportLeft * mScaleFactor % secondsSpacing;
         for (float x = startX; x < mViewWidth; x += secondsSpacing * mScaleFactor) {
@@ -293,10 +274,8 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
 
     private void drawTimeIndicators(Canvas canvas) {
-        // Draw time markers every second
         float secondsSpacing = sampleRate * dataSpacing;
         float startX = -mViewportLeft * mScaleFactor % secondsSpacing;
-
         for (float x = startX; x < mViewWidth; x += secondsSpacing * mScaleFactor) {
             int seconds = (int) ((mViewportLeft + x / mScaleFactor) / secondsSpacing);
             canvas.drawText(seconds + "s", x + 5, 30, mTextPaint);
@@ -307,36 +286,22 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         if (datas == null || datas.size() < 2) {
             return;
         }
-
-        // Calculate total content width
         mTotalWidth = datas.size() * dataSpacing;
-
-        // Auto-adjust scale if graph is being cut off
         if (isGraphCutOff() && mAutoScroll) {
             float requiredScale = mViewportWidth / mTotalWidth;
             mScaleFactor = Math.max(mMinScaleFactor, Math.min(requiredScale, mMaxScaleFactor));
         }
-
-        // Rest of the existing drawLine() logic...
-        // Auto-scroll logic
-        if (mAutoScroll && !mIsManualScrolling) {
+if (mAutoScroll && !mIsManualScrolling) {
             float targetLeft = mTotalWidth - mViewportWidth / mScaleFactor;
             mViewportLeft = targetLeft;
         }
-
-        // Clamp viewport position
         mViewportLeft = Math.max(0, Math.min(mViewportLeft, Math.max(0, mTotalWidth - mViewportWidth / mScaleFactor)));
-
-        // Calculate visible range with padding
         int startIndex = (int) Math.floor(mViewportLeft / dataSpacing);
         int endIndex = (int) Math.ceil((mViewportLeft + mViewportWidth / mScaleFactor) / dataSpacing);
         startIndex = Math.max(0, startIndex);
         endIndex = Math.min(datas.size() - 1, endIndex);
-
-        // Draw the visible portion as a continuous line
         Path path = new Path();
         boolean firstPoint = true;
-
         for (int i = startIndex; i <= endIndex; i++) {
             PointF point = datas.get(i);
             float x = (point.x - mViewportLeft) * mScaleFactor;
@@ -426,33 +391,20 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
     }
 
 
-    // Modify addNativePoint to be smoother
     public void addNativePoint(int y) {
         if (!isRunning || isClearData) {
             return;
         }
-
-        // Calculate position
         float xPos = datas.size() * dataSpacing;
-
-        // Recalculate Y coordinate
         if (this.sampleRate == 512) {
             y = (int) (mViewHalfHeight + y * 18.3 / 128 * xS / 100 * gain);
         } else if (this.sampleRate == 200) {
             float realMv = calcRealMv(y);
             y = (int) (mViewHalfHeight + realMv * xS * gain * 10);
         }
-
-        // Clamp Y to view bounds
         y = Math.max(0, Math.min(y, (int) (mViewHalfHeight * 2)));
-
-        // Add new point
         datas.add(new PointF(xPos, y));
-
-        // Update total width
         mTotalWidth = xPos + dataSpacing;
-
-        // Only request redraw if we're auto-scrolling or the point is visible
         if (mAutoScroll || (xPos >= mViewportLeft && xPos <= mViewportLeft + mViewportWidth / mScaleFactor)) {
             isDraw = true;
         }
@@ -479,14 +431,6 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         isDraw = true;
     }
 
-    public void setDelGap(int delGap) {
-        this.delGap = delGap;
-    }
-
-    public void setIsDelEffect(boolean isDelEffect) {
-        this.isDelEffect = isDelEffect;
-    }
-
     protected void startSingleThreadExecutor() {
         if (singleThreadExecutor != null && !singleThreadExecutor.isShutdown()) {
             singleThreadExecutor.shutdownNow();
@@ -495,11 +439,6 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         singleThreadExecutor = new ThreadPoolExecutor(1, 1,
                 0L, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<>(10));
-    }
-
-    public void setPagerSpeed(int pagerSpeed) {
-        this.pagerSpeed = pagerSpeed;
-        updateDataParameters();
     }
 
     public void setGain(float gain) {
@@ -514,6 +453,19 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         this.sampleRate = sampleRate;
         drawPointCostTime = Math.round(1000F / sampleRate);
         updateDataParameters();
+    }
+    public synchronized void setDataPoints(List<Integer> ecgData) {
+        if (!isRunning || ecgData == null) return;
+        datas.clear();
+        float xPos = 0;
+        for (Integer y : ecgData) {
+            float yPos = mViewHalfHeight + y * 18.3f / 128 * xS / 100 * gain;
+            yPos = Math.max(0, Math.min(yPos, mViewHalfHeight * 2));
+            datas.add(new PointF(xPos, yPos));
+            xPos += dataSpacing;
+        }
+        mTotalWidth = xPos;
+        isDraw = true;
     }
 
     private void updateDataParameters() {
@@ -532,57 +484,30 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
         public boolean onScale(ScaleGestureDetector detector) {
             float oldScale = mScaleFactor;
             mScaleFactor *= detector.getScaleFactor();
-
-            // Don't allow zooming out beyond what fits the entire graph
             float minScaleToFit = mViewportWidth / mTotalWidth;
-            mMinScaleFactor = Math.min(minScaleToFit, 0.5f); // Keep our original minimum or the fit scale, whichever is smaller
-
-            // Apply scale limits
+            mMinScaleFactor = Math.min(minScaleToFit, 0.5f);
             mScaleFactor = Math.max(mMinScaleFactor, Math.min(mScaleFactor, mMaxScaleFactor));
 
-            // Adjust viewport to zoom around the center
             float focusX = detector.getFocusX();
             float viewportCenter = mViewportLeft + focusX / oldScale;
             mViewportLeft = viewportCenter - focusX / mScaleFactor;
-
-            // Clamp viewport position
             mViewportLeft = Math.max(0, Math.min(mViewportLeft, mTotalWidth - mViewportWidth / mScaleFactor));
 
             isDraw = true;
             return true;
         }
     }
-    public void scrollToStart() {
-        mViewportLeft = 0;
-        mAutoScroll = false;
-        isDraw = true;
-    }
-
-    public void scrollToEnd() {
-        mViewportLeft = Math.max(0, mTotalWidth - mViewportWidth / mScaleFactor);
-        mAutoScroll = true;
-        isDraw = true;
-    }
 
 
     public Bitmap createFullGraphBitmap() {
-        // Calculate total width needed
         int width = (int) Math.ceil(mTotalWidth);
         int height = getHeight();
-
-        // Create a bitmap large enough for the entire graph
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-
-        // Draw background
         canvas.drawColor(Color.WHITE);
-
-        // Draw grid if enabled
         if (mShowGrid) {
             drawGrid(canvas, width, height);
         }
-
-        // Draw the complete ECG line
         drawCompleteGraph(canvas, width, height);
 
         return bitmap;
@@ -605,15 +530,12 @@ public class ChartView extends SurfaceView implements SurfaceHolder.Callback, Ru
     }
 
     private void drawGrid(Canvas canvas, int width, int height) {
-        // Draw horizontal grid lines
         float gridSpacing = height / 10f;
         for (int i = 0; i <= 10; i++) {
             float y = i * gridSpacing;
             canvas.drawLine(0, y, width, y, mGridPaint);
         }
-
-        // Draw vertical grid lines (1 second markers)
-        float secondsSpacing = sampleRate * dataSpacing;
+       float secondsSpacing = sampleRate * dataSpacing;
         for (float x = 0; x < width; x += secondsSpacing) {
             canvas.drawLine(x, 0, x, height, mGridPaint);
         }

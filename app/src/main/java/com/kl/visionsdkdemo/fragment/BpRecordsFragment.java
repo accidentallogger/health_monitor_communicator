@@ -1,5 +1,6 @@
 package com.kl.visionsdkdemo.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.kl.visionsdkdemo.BpDetailActivity;
 import com.kl.visionsdkdemo.R;
 import com.kl.visionsdkdemo.SessionManager;
 import com.kl.visionsdkdemo.adapter.BpRecordsAdapter;
@@ -58,13 +61,11 @@ public class BpRecordsFragment extends Fragment {
                     recyclerView.setVisibility(View.VISIBLE);
                     tvEmptyView.setVisibility(View.GONE);
 
+
                     adapter = new BpRecordsAdapter(records, record -> {
-                        // Handle item click
-                        BpDetailFragment detailFragment = BpDetailFragment.newInstance(record);
-                        requireActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.container, detailFragment)
-                                .addToBackStack(null)
-                                .commit();
+                        Intent intent = new Intent(requireContext(), BpDetailActivity.class);
+                        intent.putExtra("record", record); // Pass the complete record object
+                        startActivity(intent);
                     });
                     recyclerView.setAdapter(adapter);
                 }

@@ -38,9 +38,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.kl.vision_ecg.ISmctAlgoCallback;
 import com.kl.vision_ecg.SmctConstant;
 import com.kl.visionsdkdemo.R;
+import com.kl.visionsdkdemo.SessionManager;
+import com.kl.visionsdkdemo.db.DatabaseHelper;
 import com.mintti.visionsdk.ble.bean.MeasureType;
 import com.mintti.visionsdk.ble.callback.IBleWriteResponse;
 import com.mintti.visionsdk.ble.BleManager;
@@ -57,6 +60,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -78,16 +86,12 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
 
     private void saveEcgGraphToGallery() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            // Android 14+ (API 34+) - No permission needed for MediaStore
             saveGraphToMediaStore();
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13 (API 33) - Only need READ_MEDIA_IMAGES
             requestSaveWithPermission(Manifest.permission.READ_MEDIA_IMAGES);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // Android 11-12 (API 30-32) - No permission needed for MediaStore
             saveGraphToMediaStore();
         } else {
-            // Android 10 and below - Use legacy WRITE_EXTERNAL_STORAGE
             requestSaveWithPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
     }
@@ -172,7 +176,6 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
     @Override
     protected void initView(View rootView) {
         getBinding().btnSaveData.setOnClickListener(v -> saveEcgGraphToGallery());
-        // Create the spinner adapter with custom styling
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -182,7 +185,7 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                ((TextView) view).setTextColor(Color.BLACK);  // Selected item text color
+                ((TextView) view).setTextColor(Color.BLACK);
                 return view;
             }
 
@@ -190,8 +193,8 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK);  // Dropdown items text color
-                textView.setBackgroundColor(Color.WHITE);  // Dropdown items background
+                textView.setTextColor(Color.BLACK);
+                textView.setBackgroundColor(Color.WHITE);
                 return view;
             }
 
@@ -201,7 +204,7 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         getBinding().gainSpinner.setAdapter(adapter);
 
-        // Spinner selection listener
+
         getBinding().gainSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -215,7 +218,7 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Set initial spinner selection
+
         float gain = getBinding().ecgView.getGain();
         getBinding().gainSpinner.setSelection(gain == 1f ? 0 : (gain == 2f ? 1 : 2));
 
@@ -223,7 +226,6 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
             getBinding().ecgView.setSampleRate(BleManager.getInstance().getSampleRate());
         }
 
-        // Measure button click listener
         getBinding().btMeasureEcg.setOnClickListener(v -> {
             getBinding().btMeasureEcg.setImageResource(!isMeasuring ? R.drawable.ic_stop : R.drawable.ic_play);
 
@@ -233,6 +235,8 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
                 stopMeasure();
             }
         });
+
+        getBinding().btnSaveToDb.setOnClickListener(v -> saveEcgDataToDatabase());
     }
 
     private void startMeasure() {
@@ -305,20 +309,6 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
     public void onDestroyView() {
         super.onDestroyView();
         BleManager.getInstance().setEcgResultListener(null);
-    }
-
-    @Override
-    public void onDrawWave(int wave) {
-        if (getBinding() != null) {
-            getBinding().ecgView.addPoint(wave);
-            if (dataOutputStream != null) {
-                try {
-                    dataOutputStream.write(ArrayUtils.int2ByteArray(wave));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     @Override
@@ -425,20 +415,7 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
         getBinding().ecgView.clearDatas();
         handler.removeCallbacksAndMessages(null);
     }
-    private void saveEcgGraph() {
-        View chart = getBinding().ecgView;
-        chart.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(chart.getDrawingCache());
-        chart.setDrawingCacheEnabled(false);
 
-        File file = new File(requireContext().getExternalFilesDir(null), "ecg_graph_" + System.currentTimeMillis() + ".png");
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            Log.d("ECGFragment", "ECG graph saved to: " + file.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     private void saveBitmapToGallery(Bitmap bitmap) {
@@ -492,4 +469,90 @@ public class ECGFragment extends BaseMeasureFragment<FragmentEcgBinding>
             Log.e("ECGFragment", "Save error", e);
         }
     }
+
+    private List<Integer> ecgDataPoints = new ArrayList<>();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
+    @Override
+    public void onDrawWave(int wave) {
+        if (getBinding() != null) {
+            getBinding().ecgView.addPoint(wave);
+            ecgDataPoints.add(wave); // Store the data point
+
+            if (dataOutputStream != null) {
+                try {
+                    dataOutputStream.write(ArrayUtils.int2ByteArray(wave));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void saveEcgDataToDatabase() {
+        if (ecgDataPoints.isEmpty()) {
+            Toast.makeText(getContext(), "No ECG data to save", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Convert ECG data to JSON
+        String ecgDataJson = new Gson().toJson(ecgDataPoints);
+
+        // Get current date and time
+        Date now = new Date();
+        String date = dateFormat.format(now);
+        String time = timeFormat.format(now);
+
+        // Get user ID from session
+        SessionManager session = new SessionManager(requireContext());
+        String phone = session.getLoggedInPhone();
+        DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
+        int userId = dbHelper.getUserId(phone);
+
+        if (userId == -1) {
+            Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Get all measurement values
+        int avgHr = heart_rate;
+        Integer respRate = respiratory_Rate_val == 0 ? null : respiratory_Rate_val;
+        String duration = ECG_Duration;
+
+        // Get RR values from UI or calculate them
+        int rrMax = 0;
+        int rrMin = 0;
+        int hrv = 0;
+
+        try {
+            String rrMaxText = getBinding().tvRrMaxValue.getText().toString().replace(" ms", "");
+            String rrMinText = getBinding().tvRrMinValue.getText().toString().replace(" ms", "");
+            String hrvText = getBinding().tvHrvValue.getText().toString().replace(" ms", "");
+
+            rrMax = Integer.parseInt(rrMaxText);
+            rrMin = Integer.parseInt(rrMinText);
+            hrv = Integer.parseInt(hrvText);
+        } catch (NumberFormatException e) {
+            Log.e("ECGFragment", "Error parsing RR values", e);
+        }
+
+        // Save to database
+        long recordId = dbHelper.addEcgRecord(userId, avgHr, respRate, rrMax, rrMin,
+                hrv, duration, ecgDataJson, date, time, "");
+
+        if (recordId != -1) {
+            Toast.makeText(getContext(), "ECG data saved successfully", Toast.LENGTH_SHORT).show();
+
+            // Optionally save the graph image as well
+            saveEcgGraphToGallery();
+        } else {
+            Toast.makeText(getContext(), "Failed to save ECG data", Toast.LENGTH_SHORT).show();
+        }
+
+        // Clear the data points for next measurement
+        ecgDataPoints.clear();
+    }
+
+
 }
